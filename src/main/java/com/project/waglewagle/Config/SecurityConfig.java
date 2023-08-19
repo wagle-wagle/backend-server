@@ -23,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final CorsConfig corsConfig;
+    private final JwtFilter jwtFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -44,8 +45,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers("/api/v1/user/**").hasAnyRole("ADMIN", "MANAGER")
-                                .requestMatchers("/api/v1/manager/**").hasAnyRole("ROLE_ADMIN")
+                                .requestMatchers("/api/v1/manager/**").hasAnyRole("ADMIN")
                                 .requestMatchers("/api/v1/admin/**").hasAnyRole("ADMIN")
+                                .requestMatchers("/api/v1/test").hasAnyRole("USER")
                                 .anyRequest().permitAll());
 
 
@@ -58,7 +60,8 @@ public class SecurityConfig {
         public void configure(HttpSecurity http) throws Exception {
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
             http
-                    .addFilterBefore(corsConfig.corsFilter(), UsernamePasswordAuthenticationFilter.class);
+                    .addFilterBefore(corsConfig.corsFilter(), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         }
     }
 }

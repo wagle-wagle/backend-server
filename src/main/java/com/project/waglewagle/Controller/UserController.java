@@ -22,6 +22,10 @@ public class UserController {
         return ResponseEntity.ok("GG");
     }
 
+    @GetMapping("/api/v1/test2")
+    public ResponseEntity<String> test2(){
+        return ResponseEntity.ok("GG");
+    }
     @PostMapping("/authenticate") // Account 인증 API
     public ResponseEntity<String> authorize(@Valid @RequestBody LoginRequest loginDto) {
 

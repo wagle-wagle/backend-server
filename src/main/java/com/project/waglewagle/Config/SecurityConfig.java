@@ -1,10 +1,12 @@
 package com.project.waglewagle.Config;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,20 +17,25 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-    private final CorsConfig corsConfig;
     private final JwtFilter jwtFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,12 +46,8 @@ public class SecurityConfig {
 
                 .and()
                 .formLogin().disable()
-                .cors()
 
-                .and()
-                .apply(new MyCustomDsl())
-
-                .and()
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers("/api/v1/user/**").hasAnyRole("ADMIN", "MANAGER")
@@ -54,17 +57,18 @@ public class SecurityConfig {
                                 .anyRequest().permitAll());
 
 
-
+        http.cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+            @Override
+            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                CorsConfiguration config = new CorsConfiguration();
+                config.setAllowedOrigins(Collections.singletonList("*"));
+                config.setAllowedMethods(Collections.singletonList("*"));
+                config.setAllowCredentials(true);
+                config.setAllowedHeaders(Collections.singletonList("*"));
+                return config;
+            }
+        }));
 
         return http.build();
-    }
-    public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity> {
-        @Override
-        public void configure(HttpSecurity http) throws Exception {
-            AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
-            http
-                    .addFilterBefore(corsConfig.corsFilter(), UsernamePasswordAuthenticationFilter.class)
-                    .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        }
     }
 }

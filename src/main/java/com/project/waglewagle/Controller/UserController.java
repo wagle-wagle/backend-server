@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +18,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/api/v1/test")
-    public String test(){
-        return "GG";
+    public ResponseEntity<String> test(){
+        return ResponseEntity.ok("GG");
     }
 
     @PostMapping("/authenticate") // Account 인증 API
@@ -30,7 +27,6 @@ public class UserController {
 
         String token = userService.authenticate(loginDto.getEmail(), loginDto.getPassword());
 
-        // response header 에도 넣고 응답 객체에도 넣는다.
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token);
 

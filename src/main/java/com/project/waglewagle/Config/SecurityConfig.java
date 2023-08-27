@@ -39,6 +39,9 @@ public class SecurityConfig {
 
                 .and()
                 .formLogin().disable()
+                .cors()
+
+                .and()
                 .apply(new MyCustomDsl())
 
                 .and()

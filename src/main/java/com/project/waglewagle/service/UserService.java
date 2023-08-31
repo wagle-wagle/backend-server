@@ -3,7 +3,7 @@ package com.project.waglewagle.service;
 import com.project.waglewagle.dto.ResigetRequest;
 import com.project.waglewagle.entity.Users;
 import com.project.waglewagle.global.config.jwt.TokenService;
-import com.project.waglewagle.global.error.DuplicateMemberException;
+import com.project.waglewagle.global.error.exception.DuplicateMemberException;
 import com.project.waglewagle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,4 +1,4 @@
-package com.project.waglewagle.global.error;
+package com.project.waglewagle.global.error.exception;
 
 public class DuplicateMemberException extends RuntimeException{
     public DuplicateMemberException() {

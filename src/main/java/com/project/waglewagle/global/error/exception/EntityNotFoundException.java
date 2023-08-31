@@ -1,4 +1,9 @@
 package com.project.waglewagle.global.error.exception;
 
-public class EntityNotFoundException {
+import com.project.waglewagle.global.error.ErrorCode;
+
+public class EntityNotFoundException extends BusinessException{
+    public EntityNotFoundException(ErrorCode errorCode) {
+        super(errorCode);
+    }
 }

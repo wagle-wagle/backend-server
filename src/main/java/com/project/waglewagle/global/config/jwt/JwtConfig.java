@@ -1,6 +1,5 @@
-package com.project.waglewagle.Config;
+package com.project.waglewagle.global.config.jwt;
 
-import com.project.waglewagle.Service.TokenService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

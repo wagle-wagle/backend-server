@@ -1,4 +1,4 @@
-package com.project.waglewagle.Config;
+package com.project.waglewagle.global.config.jwt;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

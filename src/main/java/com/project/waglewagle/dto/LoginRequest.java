@@ -1,4 +1,4 @@
-package com.project.waglewagle.DTO;
+package com.project.waglewagle.dto;
 
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
-package com.project.waglewagle.Repository;
+package com.project.waglewagle.repository;
 
-import com.project.waglewagle.Entity.Users;
+import com.project.waglewagle.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

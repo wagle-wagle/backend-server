@@ -1,6 +1,5 @@
-package com.project.waglewagle.Config;
+package com.project.waglewagle.global.config.jwt;
 
-import com.project.waglewagle.Service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;

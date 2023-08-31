@@ -1,6 +1,6 @@
-package com.project.waglewagle.auth;
+package com.project.waglewagle.global.config.security;
 
-import com.project.waglewagle.Entity.Users;
+import com.project.waglewagle.entity.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

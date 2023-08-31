@@ -1,12 +1,11 @@
-package com.project.waglewagle.Service;
+package com.project.waglewagle.global.config.security;
 
-import com.project.waglewagle.Entity.Users;
-import com.project.waglewagle.Repository.UserRepository;
-import com.project.waglewagle.auth.PrincipalDetail;
+import com.project.waglewagle.entity.Users;
+import com.project.waglewagle.repository.UserRepository;
+import com.project.waglewagle.global.config.security.PrincipalDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component("userDetailsService")

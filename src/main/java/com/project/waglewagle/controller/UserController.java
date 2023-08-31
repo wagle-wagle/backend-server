@@ -1,11 +1,10 @@
-package com.project.waglewagle.Controller;
+package com.project.waglewagle.controller;
 
-import com.project.waglewagle.Config.JwtFilter;
-import com.project.waglewagle.DTO.LoginRequest;
-import com.project.waglewagle.DTO.ResigetRequest;
-import com.project.waglewagle.Service.UserService;
+import com.project.waglewagle.global.config.jwt.JwtFilter;
+import com.project.waglewagle.dto.LoginRequest;
+import com.project.waglewagle.dto.ResigetRequest;
+import com.project.waglewagle.service.UserService;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

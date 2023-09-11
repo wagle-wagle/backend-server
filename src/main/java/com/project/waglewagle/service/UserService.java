@@ -1,7 +1,9 @@
 package com.project.waglewagle.service;
 
 import com.project.waglewagle.dto.ResigetRequest;
+import com.project.waglewagle.entity.MemberType;
 import com.project.waglewagle.entity.Users;
+import com.project.waglewagle.external.oauth.model.OauthAttributes;
 import com.project.waglewagle.global.config.jwt.TokenService;
 import com.project.waglewagle.global.error.exception.DuplicateMemberException;
 import com.project.waglewagle.repository.UserRepository;
@@ -13,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,8 +48,26 @@ public class UserService {
                 .email(registerDto.getEmail())
                 .username(registerDto.getUsername())
                 .password(passwordEncoder.encode(registerDto.getPassword()))
+                .memberType(MemberType.GENERAL)
                 .roles("ROLE_USER")
                 .build();
         userRepository.save(user);
+    }
+
+
+    @Transactional
+    public Users signup(OauthAttributes userInfo) {
+        Users socialUser = Users.builder()
+                .email(userInfo.getEmail())
+                .username(userInfo.getUsername())
+                .password(passwordEncoder.encode(userInfo.getPassword()))
+                .memberType(userInfo.getMemberType())
+                .roles("ROLE_USER")
+                .build();
+        return userRepository.save(socialUser);
+    }
+
+    public Optional<Users> findMemberByEmail(String email){
+        return userRepository.findByEmail(email);
     }
 }

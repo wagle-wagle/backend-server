@@ -17,6 +17,10 @@ public class BroadResponse {
 
     private String url;
 
+    private Long createdTime;
+
+    private Long updatedTime;
+
     public BroadResponse(Broad entity) {
         this.id = entity.getId();
         this.version = entity.getVersion();
@@ -28,5 +32,7 @@ public class BroadResponse {
                 .friendCode(entity.getBroadStyle().getFriendCode())
                 .build();
         this.url = entity.getUrl();
+        this.createdTime = entity.getCreatedTime();
+        this.updatedTime = entity.getUpdatedTime();
     }
 }

@@ -1,8 +1,6 @@
 package com.project.waglewagle.entity.common;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,11 +13,18 @@ import java.time.LocalDateTime;
 @Getter
 public class BaseTimeEntity {
 
-    @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createdTime; // 생성시간
+    private Long createdTime; // 생성시간
+    @PrePersist
+    public void setCreatedTime(){
+        this.createdTime = System.currentTimeMillis() / 1000;
+    }
 
-    @LastModifiedDate
-    private LocalDateTime updatedTime; // 수정시간
+    @Column
+    private Long updatedTime; // 수정시간
+    @PreUpdate
+    public void setUpdatedTime(){
+        this.updatedTime = System.currentTimeMillis() /1000;
+    }
 
 }

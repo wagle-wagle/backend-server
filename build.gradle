@@ -38,6 +38,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
+	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.3'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 

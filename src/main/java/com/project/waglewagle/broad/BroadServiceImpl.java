@@ -2,10 +2,16 @@ package com.project.waglewagle.broad;
 
 import com.project.waglewagle.broad.dto.BroadPostRequest;
 import com.project.waglewagle.broad.dto.BroadResponse;
+import com.project.waglewagle.broad.dto.BroadStyleDTO;
+import com.project.waglewagle.broad.dto.BroadUpdateRequest;
+import com.project.waglewagle.global.error.ErrorCode;
+import com.project.waglewagle.global.error.exception.EntityNotFoundException;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@NoArgsConstructor(force = true)
+@RequiredArgsConstructor
 @Service
 public class BroadServiceImpl implements BroadService{
 
@@ -14,7 +20,8 @@ public class BroadServiceImpl implements BroadService{
     private final BroadStyleRepository broadStyleRepository;
     @Override
     public BroadResponse getBroad(Long broadId) {
-        return new BroadResponse(broadRepository.findById(broadId).get());
+        Broad broad = broadRepository.findById(broadId).orElseThrow(() -> new EntityNotFoundException(ErrorCode.BROAD_NOT_EXIST));
+        return new BroadResponse(broad);
     }
 
     @Override
@@ -26,5 +33,24 @@ public class BroadServiceImpl implements BroadService{
                 .broadStyle(broadStyle)
                 .url(request.getUrl())
                 .build();
+        broadRepository.save(broad);
+    }
+
+    @Override
+    @Transactional
+    public BroadResponse changeTitle(Long broadId, BroadUpdateRequest request) {
+        Broad broad = broadRepository.findById(broadId).orElseThrow(() -> new EntityNotFoundException(ErrorCode.BROAD_NOT_EXIST));
+        broad.updateTitle(request.getTitle());
+
+        return new BroadResponse(broadRepository.save(broad));
+    }
+
+    @Override
+    @Transactional
+    public BroadStyleDTO changeStyle(Long broadStyleId, BroadStyleDTO request) {
+        BroadStyle broadStyle = broadStyleRepository.findById(broadStyleId).get();
+        broadStyle.update(request);
+
+        return new BroadStyleDTO(broadStyleRepository.save(broadStyle));
     }
 }

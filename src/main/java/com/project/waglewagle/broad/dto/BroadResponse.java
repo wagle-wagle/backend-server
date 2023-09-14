@@ -3,7 +3,9 @@ package com.project.waglewagle.broad.dto;
 import com.project.waglewagle.broad.Broad;
 import com.project.waglewagle.broad.BroadStyle;
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 public class BroadResponse {
     private Long id;
 
@@ -21,9 +23,9 @@ public class BroadResponse {
         this.title = entity.getTitle();
         this.broadStyle = BroadStyleDTO.builder()
                 .id(entity.getBroadStyle().getId())
-                .color_Code(entity.getBroadStyle().getColor_Code())
-                .backGround_Code(entity.getBroadStyle().getBackGround_Code())
-                .friend_Code(entity.getBroadStyle().getFriend_Code())
+                .colorCode(entity.getBroadStyle().getColorCode())
+                .backGroundCode(entity.getBroadStyle().getBackGroundCode())
+                .friendCode(entity.getBroadStyle().getFriendCode())
                 .build();
         this.url = entity.getUrl();
     }

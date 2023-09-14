@@ -1,25 +1,40 @@
 package com.project.waglewagle.broad.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.waglewagle.broad.BroadStyle;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BroadStyleDTO {
     private Long id;
 
-    private Integer color_Code;
+    @JsonProperty("colorCode")
+    private Integer colorCode;
 
-    private Integer backGround_Code;
+    @JsonProperty("backGroundCode")
+    private Integer backGroundCode;
 
-    private Integer friend_Code;
+    @JsonProperty("friendCode")
+    private Integer friendCode;
 
     public BroadStyle toEntity(){
         return BroadStyle.builder()
-                .backGround_Code(this.backGround_Code)
-                .color_Code(this.color_Code)
-                .friend_Code(this.friend_Code)
+                .backGroundCode(this.backGroundCode)
+                .colorCode(this.colorCode)
+                .friendCode(this.friendCode)
                 .build();
+    }
+
+    public BroadStyleDTO(BroadStyle entity) {
+        this.id = entity.getId();
+        this.colorCode = entity.getColorCode();
+        this.backGroundCode = entity.getBackGroundCode();
+        this.friendCode = entity.getFriendCode();
     }
 }

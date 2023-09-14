@@ -1,5 +1,6 @@
 package com.project.waglewagle.broad;
 
+import com.project.waglewagle.broad.dto.BroadStyleDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,12 +18,23 @@ public class BroadStyle {
     private Long id;
 
     @Column
-    private Integer color_Code;
+    private Integer colorCode;
 
     @Column
-    private Integer backGround_Code;
+    private Integer backGroundCode;
 
     @Column
-    private Integer friend_Code;
+    private Integer friendCode;
 
+    public void update(BroadStyleDTO request) {
+        if(request.getColorCode() != null){
+            this.colorCode = request.getColorCode();
+        }
+        if(request.getBackGroundCode() != null){
+            this.friendCode = request.getFriendCode();
+        }
+        if(request.getFriendCode() != null){
+            this.friendCode = request.getFriendCode();
+        }
+    }
 }

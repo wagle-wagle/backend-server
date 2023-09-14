@@ -15,6 +15,7 @@ public enum ErrorCode {
     NOT_VALID_TOKEN(HttpStatus.UNAUTHORIZED, "A0002", "유효하지 않는 토큰입니다."),
 
     // 기와(방명록)
+    BROAD_NOT_EXIST(HttpStatus.BAD_REQUEST,"B0001", "기와가 존재하지 않습니다."),
 
 
 

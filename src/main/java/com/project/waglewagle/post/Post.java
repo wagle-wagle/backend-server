@@ -1,8 +1,8 @@
-package com.project.waglewagle.broad;
+package com.project.waglewagle.post;
 
-import com.project.waglewagle.broad.dto.BroadStyleDTO;
+import com.project.waglewagle.broad.Broad;
+import com.project.waglewagle.broad.BroadStyle;
 import com.project.waglewagle.entity.common.BaseTimeEntity;
-import com.project.waglewagle.post.Post;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,37 +10,32 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Builder
-public class Broad extends BaseTimeEntity {
+public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "broad_id")
+    private Broad broad;
 
     @Column
     private String version;
 
     @Column
-    private String title;
+    private String message;
+
+    @Column
+    private String nickName;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "style_id")
-    private BroadStyle broadStyle;
-
-    @OneToMany(mappedBy = "broad", cascade = CascadeType.REMOVE)
-    private List<Post> posts = new ArrayList<>();
+    private PostStyle postStyle;
 
 
-    @Column
-    private String url;
-
-    public void updateTitle(String newTitle) {
-        this.title = newTitle;
-    }
 }

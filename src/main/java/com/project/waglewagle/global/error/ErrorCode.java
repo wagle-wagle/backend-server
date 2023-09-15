@@ -14,8 +14,11 @@ public enum ErrorCode {
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "A0001", "토큰이 만료되었습니다."),
     NOT_VALID_TOKEN(HttpStatus.UNAUTHORIZED, "A0002", "유효하지 않는 토큰입니다."),
 
+    // 기와집(게시판)
+    BROAD_NOT_EXIST(HttpStatus.BAD_REQUEST,"B0001", "기와집이 존재하지 않습니다."),
+
     // 기와(방명록)
-    BROAD_NOT_EXIST(HttpStatus.BAD_REQUEST,"B0001", "기와가 존재하지 않습니다."),
+    POST_NOT_EXIST(HttpStatus.BAD_REQUEST, "P0001", "기와가 존재하지 않습니다."),
 
 
 

@@ -33,7 +33,7 @@ public class Broad extends BaseTimeEntity {
     @JoinColumn(name = "style_id")
     private BroadStyle broadStyle;
 
-    @OneToMany(mappedBy = "broad")
+    @OneToMany(mappedBy = "broad", cascade = CascadeType.REMOVE)
     private List<Post> posts = new ArrayList<>();
 
 

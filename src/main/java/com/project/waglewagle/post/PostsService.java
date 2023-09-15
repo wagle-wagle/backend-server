@@ -12,7 +12,7 @@ public interface PostsService {
 
     PostsResponse getPost(Long postId);
 
-    void createPost(PostsRequest postsRequest,Long broadId);
+    void createPost(PostsRequest postsRequest);
 
     void deletePost(Long postId);
 

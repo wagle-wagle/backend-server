@@ -30,6 +30,9 @@ public class Post extends BaseTimeEntity {
     @Column
     private String message;
 
+    @Column
+    private String nickName;
+
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "style_id")
     private PostStyle postStyle;

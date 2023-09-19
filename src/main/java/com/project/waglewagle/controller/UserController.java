@@ -21,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
 
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     public ResponseEntity<ResultDto> login(@Valid @RequestBody LoginRequest loginDto) {
 
         LoginResponse loginResponse = userService.login(loginDto.getEmail(), loginDto.getPassword());
@@ -43,7 +43,7 @@ public class UserController {
 
         UserInfoResponse userInfoResponse = userService.signup(registerDto.getEmail(), registerDto.getPassword());
         TokenDto authenticate  = userService.authenticate(
-                userInfoResponse.getUserid(),
+                userInfoResponse.getUserId(),
                 registerDto.getEmail(),
                 registerDto.getPassword()
         );

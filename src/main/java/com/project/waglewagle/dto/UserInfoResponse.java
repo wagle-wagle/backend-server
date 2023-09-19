@@ -9,7 +9,7 @@ import lombok.Getter;
 @Builder
 public class UserInfoResponse {
 
-    private Long userid;
+    private Long userId;
     private String email;
     private String username;
     private String memberType;
@@ -17,7 +17,7 @@ public class UserInfoResponse {
 
     public static UserInfoResponse of(Users user){
         return UserInfoResponse.builder()
-                .userid(user.getId())
+                .userId(user.getId())
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .memberType(user.getMemberType().toString())

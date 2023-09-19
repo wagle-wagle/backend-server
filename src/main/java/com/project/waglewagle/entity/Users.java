@@ -45,5 +45,8 @@ public class Users extends BaseTimeEntity {
         return new ArrayList<>();
     }
 
+    public void updateUsername(String hopae){
+        this.username = hopae;
+    }
 
 }

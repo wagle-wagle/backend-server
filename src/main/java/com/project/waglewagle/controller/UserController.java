@@ -64,7 +64,7 @@ public class UserController {
     @PostMapping("/users/hopae")
     public ResponseEntity<ResultDto> updateHopae(@RequestBody HopaeRequest hopaeDto){
 
-        UserInfoResponse userResponse = userService.updateHopae(hopaeDto.getUserId(), hopaeDto.getUsername());
+        UserInfoResponse userResponse = userService.updateHopae(hopaeDto.getUserId(), hopaeDto.getUserName());
         ResultDto resultDto = ResultDto.in("success", "호패 등록이 성공적으로 완료되었습니다.");
         resultDto.setData(userResponse);
         return ResponseEntity.status(HttpStatus.OK).body(resultDto);

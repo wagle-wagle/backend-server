@@ -1,14 +1,19 @@
 package com.project.waglewagle.dto;
 
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class HopaeRequest {
+    @JsonProperty("userId")
     private Long userId;
-    private String username;
+
+    @JsonProperty("userName")
+    private String userName;
+
 }

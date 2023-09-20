@@ -4,11 +4,19 @@ import com.project.waglewagle.broad.dto.BroadPostRequest;
 import com.project.waglewagle.broad.dto.BroadResponse;
 import com.project.waglewagle.broad.dto.BroadStyleDTO;
 import com.project.waglewagle.broad.dto.BroadUpdateRequest;
+import com.project.waglewagle.global.config.security.PrincipalDetail;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -25,8 +33,8 @@ public class BroadController {
     }
 
     @PostMapping("/broads")
-    public ResponseEntity<String> postBroad(@RequestBody BroadPostRequest request){
-        broadService.postBroad(request);
+    public ResponseEntity<String> postBroad(@RequestBody BroadPostRequest request, @AuthenticationPrincipal PrincipalDetail principalDetail){
+        broadService.postBroad(request,principalDetail.getUser());
         return new ResponseEntity<>("good",HttpStatus.OK);
     }
 

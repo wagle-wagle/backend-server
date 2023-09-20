@@ -2,16 +2,20 @@ package com.project.waglewagle.global.config.jwt;
 
 import com.project.waglewagle.dto.TokenDto;
 import com.project.waglewagle.entity.Users;
+import com.project.waglewagle.global.config.security.CustomUserDetailService;
+import com.project.waglewagle.global.config.security.PrincipalDetail;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.Key;
 import java.util.Arrays;
@@ -22,6 +26,8 @@ import java.util.stream.Collectors;
 
 
 public class TokenService {
+    @Autowired
+    CustomUserDetailService customUserDetailService;
     protected final Logger logger = LoggerFactory.getLogger(TokenService.class);
 
     protected static final String AUTHORITIES_KEY = "auth";
@@ -67,15 +73,9 @@ public class TokenService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+        UserDetails principal = customUserDetailService.loadUserByUsername((String) claims.get("email"));
 
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
-
-        User principal = new User(claims.getSubject(), "", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(principal, token, principal.getAuthorities());
     }
 
     public boolean validateToken(String token) {

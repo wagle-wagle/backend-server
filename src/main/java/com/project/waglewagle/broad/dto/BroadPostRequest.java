@@ -11,7 +11,7 @@ public class BroadPostRequest {
     private String title;
 
     @JsonProperty("broadStyle")
-    private BroadStyleDTO broadSytle;
+    private BroadStyleDTO broadStyle;
 
     private String url;
 

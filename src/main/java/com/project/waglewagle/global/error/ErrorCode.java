@@ -9,6 +9,8 @@ public enum ErrorCode {
     // 회원
     ALREADY_REGISTERED_MEMBER(HttpStatus.BAD_REQUEST, "M0001", "이미 가입된 회원 입니다."),
     MEMBER_NOT_EXIST(HttpStatus.BAD_REQUEST, "M0002", "해당 회원은 존재하지 않습니다. "),
+    NOT_MATCHED_PASSWORD(HttpStatus.BAD_REQUEST, "M003", "패스워드가 일치하지 않습니다. "),
+
 
     // 인증•인가
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "A0001", "토큰이 만료되었습니다."),
@@ -23,7 +25,6 @@ public enum ErrorCode {
 
 
     ;
-
     private HttpStatus httpStatus;
     private String errorCode;
     private String message;

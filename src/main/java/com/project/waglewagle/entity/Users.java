@@ -1,6 +1,8 @@
 package com.project.waglewagle.entity;
 
+import com.project.waglewagle.broad.Broad;
 import com.project.waglewagle.entity.common.BaseTimeEntity;
+import com.project.waglewagle.post.PostStyle;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +32,10 @@ public class Users extends BaseTimeEntity {
     @Column
     private String username;
 
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "broad_id")
+    private Broad broad;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MemberType memberType;
@@ -45,5 +51,12 @@ public class Users extends BaseTimeEntity {
         return new ArrayList<>();
     }
 
+    public void updateUsername(String hopae){
+        this.username = hopae;
+    }
+
+    public void createBroad(Broad broad){
+        this.broad = broad;
+    }
 
 }

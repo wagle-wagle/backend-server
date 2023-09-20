@@ -1,16 +1,9 @@
 package com.project.waglewagle.global.error.exception;
 
-public class DuplicateMemberException extends RuntimeException{
-    public DuplicateMemberException() {
-        super();
-    }
-    public DuplicateMemberException(String message, Throwable cause) {
-        super(message, cause);
-    }
-    public DuplicateMemberException(String message) {
-        super(message);
-    }
-    public DuplicateMemberException(Throwable cause) {
-        super(cause);
+import com.project.waglewagle.global.error.ErrorCode;
+
+public class DuplicateMemberException extends BusinessException{
+    public DuplicateMemberException(ErrorCode errorCode) {
+        super(errorCode);
     }
 }

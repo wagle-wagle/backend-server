@@ -1,8 +1,8 @@
 package com.project.waglewagle.controller;
 
+import com.project.waglewagle.dto.*;
+import com.project.waglewagle.dto.common.ResultDto;
 import com.project.waglewagle.global.config.jwt.JwtFilter;
-import com.project.waglewagle.dto.LoginRequest;
-import com.project.waglewagle.dto.ResigetRequest;
 import com.project.waglewagle.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,42 +11,77 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
+@RequestMapping(value = "/api/v1")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
 
-    @GetMapping("/api/v1/test")
-    public ResponseEntity<String> test(){
-        return ResponseEntity.ok("GG");
-    }
 
-    @GetMapping("/api/v1/test2")
-    public ResponseEntity<String> test2(){
-        return ResponseEntity.ok("GG");
-    }
-    @PostMapping("/authenticate") // Account 인증 API
-    public ResponseEntity<String> authorize(@Valid @RequestBody LoginRequest loginDto) {
+    @PostMapping("/users/login")
+    public ResponseEntity<ResultDto> login(@Valid @RequestBody LoginRequest loginDto) {
 
-        String token = userService.authenticate(loginDto.getEmail(), loginDto.getPassword());
+        LoginResponse loginResponse = userService.login(loginDto.getEmail(), loginDto.getPassword());
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token);
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + loginResponse.getAccessToken());
 
-        return new ResponseEntity<>(token, httpHeaders, HttpStatus.OK);
+        ResultDto resultDto = ResultDto.in("success", "로그인 성공적으로 완료되었습니다.");
+        resultDto.setData(loginResponse);
+        return new ResponseEntity<>(resultDto, httpHeaders, HttpStatus.OK);
+
     }
 
-    @PostMapping("/user/signup")
-    public ResponseEntity<String> signup(
-            @Valid @RequestBody ResigetRequest registerDto
-    ) {
-        userService.signup(registerDto);
-        String token = userService.authenticate(registerDto.getEmail(), registerDto.getPassword());
 
+
+    // 회원가입
+    @PostMapping("/users/signup")
+    public ResponseEntity<ResultDto> signup(@Valid @RequestBody SignupRequest registerDto) {
+
+        UserInfoResponse userInfoResponse = userService.signup(registerDto.getEmail(), registerDto.getPassword());
+        TokenDto authenticate  = userService.authenticate(
+                userInfoResponse.getUserId(),
+                registerDto.getEmail(),
+                registerDto.getPassword()
+        );
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token);
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + authenticate.getAccessToken());
 
-        return new ResponseEntity<>(token, httpHeaders, HttpStatus.OK);
+        ResultDto resultDto = ResultDto.in("success", "회원가입 성공적으로 완료되었습니다.");
+
+        Map<String, Long> data = new HashMap<>();
+        data.put("userId", authenticate.getUserId());
+
+        resultDto.setData(data);
+        return new ResponseEntity<>(resultDto, httpHeaders, HttpStatus.OK);
     }
+
+
+
+    @PostMapping("/users/hopae")
+    public ResponseEntity<ResultDto> updateHopae(@RequestBody HopaeRequest hopaeDto){
+
+        UserInfoResponse userResponse = userService.updateHopae(hopaeDto.getUserId(), hopaeDto.getUserName());
+        ResultDto resultDto = ResultDto.in("success", "호패 등록이 성공적으로 완료되었습니다.");
+        resultDto.setData(userResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(resultDto);
+    }
+
+
+/*
+   // 이메일 중복 확인
+    @GetMapping("/users/duplicate-check")
+    public ResponseEntity<ResultDto> validateDuplicateMember(@RequestParam("email") String email){
+        Optional<Users> user = userService.findMemberByEmail(email);
+        ResultDto resultDto = ResultDto.in("success", "이메일 중복 조회 완료되었습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(resultDto);
+    }
+
+*/
+
 
 }

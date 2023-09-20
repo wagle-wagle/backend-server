@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 public interface BroadService {
     BroadResponse getBroad(Long broadId);
 
+    BroadResponse getBroadByUrl(String broadUrl);
+
     void postBroad(BroadPostRequest request, Users users);
 
     BroadResponse changeTitle(Long broadId, BroadUpdateRequest request);

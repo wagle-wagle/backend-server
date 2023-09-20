@@ -14,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -26,10 +27,18 @@ public class BroadController {
     @Autowired
     BroadService broadService;
 
-    @GetMapping("/broads/{BroadId}")
-    public ResponseEntity<BroadResponse> getBroad(@PathVariable("BroadId") Long broadId){
-        BroadResponse response = broadService.getBroad(broadId);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @GetMapping("/broads/{Broad}")
+    public ResponseEntity<BroadResponse> getBroad(@PathVariable("Broad") String broad){
+        try{
+            BroadResponse response = broadService.getBroad(Long.parseLong(broad));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch (NumberFormatException e)
+        {
+            BroadResponse response = broadService.getBroadByUrl(broad);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+
     }
 
     @PostMapping("/broads")

@@ -29,6 +29,12 @@ public class BroadServiceImpl implements BroadService{
     }
 
     @Override
+    public BroadResponse getBroadByUrl(String broadUrl) {
+        Broad broad = broadRepository.findByUrl(broadUrl).orElseThrow(() -> new EntityNotFoundException(ErrorCode.BROAD_NOT_EXIST));
+        return new BroadResponse(broad);
+    }
+
+    @Override
     @Transactional
     public void postBroad(BroadPostRequest request, Users users) {
         BroadStyle broadStyle = request.getBroadStyle().toEntity();
@@ -38,10 +44,8 @@ public class BroadServiceImpl implements BroadService{
                 .broadStyle(broadStyle)
                 .url(request.getUrl())
                 .build();
-        System.out.println(users.getId());
-        Broad broad1 = broadRepository.save(broad);
-        System.out.println(broad1.getId());
         users.createBroad(broadRepository.save(broad));
+        userRepository.save(users);
     }
 
     @Override

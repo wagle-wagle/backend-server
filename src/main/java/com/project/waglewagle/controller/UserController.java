@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping(value = "/api/v1")
 @RequiredArgsConstructor
 public class UserController {
 

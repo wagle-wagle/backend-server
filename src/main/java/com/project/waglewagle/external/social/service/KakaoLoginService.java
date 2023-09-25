@@ -1,11 +1,14 @@
-package com.project.waglewagle.external.kakao.service;
+package com.project.waglewagle.external.social.service;
 
+import com.project.waglewagle.dto.LoginResponse;
+import com.project.waglewagle.dto.TokenDto;
+import com.project.waglewagle.dto.UserInfoResponse;
 import com.project.waglewagle.entity.MemberType;
 import com.project.waglewagle.entity.Users;
-import com.project.waglewagle.external.kakao.client.KakaoTokenClient;
-import com.project.waglewagle.external.kakao.client.KakaoUserInfoClient;
-import com.project.waglewagle.external.kakao.dto.KakaoTokenDto;
-import com.project.waglewagle.external.kakao.dto.KakaoUserInfoDto;
+import com.project.waglewagle.external.social.client.KakaoTokenClient;
+import com.project.waglewagle.external.social.client.KakaoUserInfoClient;
+import com.project.waglewagle.external.social.dto.KakaoTokenDto;
+import com.project.waglewagle.external.social.dto.KakaoUserInfoDto;
 import com.project.waglewagle.external.oauth.model.OauthAttributes;
 import com.project.waglewagle.global.config.jwt.JwtFilter;
 import com.project.waglewagle.global.config.jwt.TokenService;
@@ -14,8 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -89,24 +90,32 @@ public class KakaoLoginService {
 
 
 
-    public ResponseEntity<String> emailExist(OauthAttributes kakaoUserInfo) {
+    public LoginResponse emailExist(OauthAttributes kakaoUserInfo) {
 
         Optional<Users> findUser = userService.findMemberByEmail(kakaoUserInfo.getEmail());
 
         if (findUser.isEmpty()) {
             log.info("===================== 카카오 신규회원 가입 =====================");
-            Users users = userService.signup(kakaoUserInfo);
+            UserInfoResponse users = userService.signup(kakaoUserInfo);
 
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(kakaoUserInfo.getEmail(), kakaoUserInfo.getPassword());
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            String token = tokenProvider.createToken(authentication);
-            log.info("KAKAO 로그인 token 발급 (신규) {} ", token);
+            TokenDto token = tokenProvider.createToken(authentication, users.getUserId());
+            log.info("KAKAO 로그인 token 발급 (신규) {} ", token.getAccessToken());
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token);
-            return new ResponseEntity<>("카카오 신규 회원입니다.", httpHeaders, HttpStatus.OK);
+            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token.getAccessToken());
+
+            LoginResponse loginResponse = LoginResponse.builder()
+                    .userId(users.getUserId())
+                    .username(users.getUsername())
+                    .isExistHopae(users.getUsername() == null? false : true)
+                    .accessToken(token.getAccessToken())
+                    .build();
+
+            return loginResponse;
 
         } else {
             log.info("===================== 카카오 로그인  =====================");
@@ -115,11 +124,20 @@ public class KakaoLoginService {
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            String token = tokenProvider.createToken(authentication);
-            log.info("KAKAO 로그인 token 발급 (기존) {} ", token);
+            TokenDto token = tokenProvider.createToken(authentication, findUser.get().getId());
+            log.info("KAKAO 로그인 token 발급 (기존) {} ", token.getAccessToken());
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token);
-            return new ResponseEntity<>("카카오 회원입니다.", httpHeaders, HttpStatus.OK);
+            httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token.getAccessToken());
+
+
+            LoginResponse loginResponse = LoginResponse.builder()
+                    .userId(findUser.get().getId())
+                    .username(findUser.get().getUsername())
+                    .isExistHopae(findUser.get().getUsername() == null ? false : true)
+                    .accessToken(token.getAccessToken())
+                    .build();
+
+            return loginResponse;
         }
     }
 

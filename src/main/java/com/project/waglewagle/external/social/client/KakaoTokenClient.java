@@ -1,6 +1,6 @@
-package com.project.waglewagle.external.kakao.client;
+package com.project.waglewagle.external.social.client;
 
-import com.project.waglewagle.external.kakao.dto.KakaoTokenDto;
+import com.project.waglewagle.external.social.dto.KakaoTokenDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.PostMapping;

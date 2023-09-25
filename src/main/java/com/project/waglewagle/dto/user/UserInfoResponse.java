@@ -1,4 +1,4 @@
-package com.project.waglewagle.dto;
+package com.project.waglewagle.dto.user;
 
 
 import com.project.waglewagle.entity.Users;

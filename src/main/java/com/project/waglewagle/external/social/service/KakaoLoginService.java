@@ -110,8 +110,8 @@ public class KakaoLoginService {
 
             LoginResponse loginResponse = LoginResponse.builder()
                     .userId(users.getUserId())
-                    .username(users.getUsername())
-                    .isExistHopae(users.getUsername() == null? false : true)
+                    .username(users.getUserName())
+                    .isExistHopae(users.getUserName() == null? false : true)
                     .accessToken(token.getAccessToken())
                     .build();
 

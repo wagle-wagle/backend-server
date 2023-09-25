@@ -63,9 +63,9 @@ public class UserService {
 
         LoginResponse loginResponse = LoginResponse.builder()
                 .userId(findUser.get().getId())
-                .username(findUser.get().getUsername())
+                .userName(findUser.get().getUserName())
                 .accessToken(tokenDto.getAccessToken())
-                .isExistHopae(findUser.get().getUsername() == null ? false : true)
+                .isExistHopae(findUser.get().getUserName() == null ? false : true)
                 .build();
         return loginResponse;
     }
@@ -107,6 +107,7 @@ public class UserService {
         Users socialUser = Users.builder()
                 .email(userInfo.getEmail())
                 .password(passwordEncoder.encode(userInfo.getPassword()))
+                .userName(userInfo.getUserName())
                 .memberType(userInfo.getMemberType())
                 .roles("ROLE_USER")
                 .build();

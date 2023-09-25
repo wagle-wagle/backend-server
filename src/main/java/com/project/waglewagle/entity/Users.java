@@ -30,7 +30,7 @@ public class Users extends BaseTimeEntity {
     private String password;
 
     @Column
-    private String username;
+    private String userName;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "broad_id")
@@ -52,7 +52,7 @@ public class Users extends BaseTimeEntity {
     }
 
     public void updateUsername(String hopae){
-        this.username = hopae;
+        this.userName = hopae;
     }
 
     public void createBroad(Broad broad){

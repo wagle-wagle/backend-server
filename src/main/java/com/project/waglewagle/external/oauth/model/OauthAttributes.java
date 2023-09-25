@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Builder
 public class OauthAttributes {
-    private String username;
+    private String userName;
     private String email;
     private String password;
     private MemberType memberType;

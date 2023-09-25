@@ -1,6 +1,7 @@
 package com.project.waglewagle.controller;
 
 import com.project.waglewagle.dto.*;
+import com.project.waglewagle.dto.user.*;
 import com.project.waglewagle.global.util.CommonResponse;
 import com.project.waglewagle.entity.Users;
 import com.project.waglewagle.global.config.jwt.JwtFilter;
@@ -66,7 +67,7 @@ public class UserController {
 
     @PostMapping("/users/hopae")
     public CommonResponse<UserInfoResponse> updateHopae(@RequestBody HopaeRequest hopaeDto){
-        UserInfoResponse userResponse = userService.updateHopae(hopaeDto.getUserId(), hopaeDto.getUsername());
+        UserInfoResponse userResponse = userService.updateHopae(hopaeDto.getUserId(), hopaeDto.getUserName());
         return ApiResponse.createSuccess("호패 등록이 성공적으로 완료되었습니다.", HttpStatus.OK, userResponse);
 
     }

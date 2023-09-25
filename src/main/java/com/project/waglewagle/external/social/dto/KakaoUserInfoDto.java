@@ -1,4 +1,4 @@
-package com.project.waglewagle.external.kakao.dto;
+package com.project.waglewagle.external.social.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

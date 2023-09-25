@@ -1,6 +1,6 @@
-package com.project.waglewagle.external.kakao.client;
+package com.project.waglewagle.external.social.client;
 
-import com.project.waglewagle.external.kakao.dto.KakaoUserInfoDto;
+import com.project.waglewagle.external.social.dto.KakaoUserInfoDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;

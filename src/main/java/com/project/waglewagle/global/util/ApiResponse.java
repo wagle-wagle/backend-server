@@ -1,6 +1,5 @@
 package com.project.waglewagle.global.util;
 
-import com.project.waglewagle.dto.common.CommonResponse;
 import com.project.waglewagle.global.error.ErrorCode;
 import org.springframework.http.HttpStatus;
 

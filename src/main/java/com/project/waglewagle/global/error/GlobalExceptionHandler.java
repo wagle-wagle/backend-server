@@ -1,6 +1,6 @@
 package com.project.waglewagle.global.error;
 
-import com.project.waglewagle.dto.common.CommonResponse;
+import com.project.waglewagle.global.util.CommonResponse;
 import com.project.waglewagle.global.error.exception.BusinessException;
 import com.project.waglewagle.global.util.ApiResponse;
 import lombok.extern.slf4j.Slf4j;

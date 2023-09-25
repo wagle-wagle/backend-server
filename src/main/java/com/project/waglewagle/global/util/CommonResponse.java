@@ -1,4 +1,4 @@
-package com.project.waglewagle.dto.common;
+package com.project.waglewagle.global.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;

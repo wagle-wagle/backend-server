@@ -1,8 +1,7 @@
-package com.project.waglewagle.global.error.exception;
+package com.project.waglewagle.global.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.waglewagle.dto.common.CommonResponse;
-import com.project.waglewagle.global.error.ErrorCode;
+import com.project.waglewagle.global.util.CommonResponse;
 import com.project.waglewagle.global.util.ApiResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;

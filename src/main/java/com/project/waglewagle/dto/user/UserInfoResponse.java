@@ -21,7 +21,7 @@ public class UserInfoResponse {
         return UserInfoResponse.builder()
                 .userId(user.getId())
                 .email(user.getEmail())
-                .userName(user.getUsername())
+                .userName(user.getUserName())
                 .memberType(user.getMemberType().toString())
                 .broadId(user.getBroad().getId())
                 .build();
@@ -30,7 +30,7 @@ public class UserInfoResponse {
             return UserInfoResponse.builder()
                     .userId(user.getId())
                     .email(user.getEmail())
-                    .userName(user.getUsername())
+                    .userName(user.getUserName())
                     .memberType(user.getMemberType().toString())
                     .build();
         }

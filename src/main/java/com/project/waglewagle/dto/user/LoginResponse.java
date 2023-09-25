@@ -5,15 +5,15 @@ import lombok.*;
 @Getter
 public class LoginResponse {
     private Long userId;
-    private String username;
+    private String userName;
     private Boolean isExistHopae;
     private String accessToken;
 
 
     @Builder
-    public LoginResponse(Long userId, String accessToken, String username, boolean isExistHopae){
+    public LoginResponse(Long userId, String accessToken, String userName, boolean isExistHopae){
         this.userId = userId;
-        this.username = username;
+        this.userName = userName;
         this.isExistHopae = isExistHopae;
         this.accessToken = accessToken;
     }

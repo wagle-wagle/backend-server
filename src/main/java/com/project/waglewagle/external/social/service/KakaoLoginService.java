@@ -81,7 +81,7 @@ public class KakaoLoginService {
         log.info("===================== 카카오 사용자 정보 가져오기 getUserInfo = " + email + "/" + id + "===========================");
 
         return OauthAttributes.builder()
-                .username(kakaoAccount.getProfile().getNickname())
+                .userName(kakaoAccount.getProfile().getNickname())
                 .email(!StringUtils.hasText(email) ? kakaoUserInfoResponse.getId() : email) // 이메일 존재하지 않은경우 회원번호
                 .password(kakaoUserInfoResponse.getId()+"_"+MemberType.KAKAO)
                 .memberType(MemberType.KAKAO)
@@ -110,7 +110,7 @@ public class KakaoLoginService {
 
             LoginResponse loginResponse = LoginResponse.builder()
                     .userId(users.getUserId())
-                    .username(users.getUserName())
+                    .userName(users.getUserName())
                     .isExistHopae(users.getUserName() == null? false : true)
                     .accessToken(token.getAccessToken())
                     .build();
@@ -132,8 +132,8 @@ public class KakaoLoginService {
 
             LoginResponse loginResponse = LoginResponse.builder()
                     .userId(findUser.get().getId())
-                    .username(findUser.get().getUsername())
-                    .isExistHopae(findUser.get().getUsername() == null ? false : true)
+                    .userName(findUser.get().getUserName())
+                    .isExistHopae(findUser.get().getUserName() == null ? false : true)
                     .accessToken(token.getAccessToken())
                     .build();
 

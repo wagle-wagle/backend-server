@@ -15,13 +15,17 @@ public enum ErrorCode {
     // 인증•인가
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "A0001", "토큰이 만료되었습니다."),
     NOT_VALID_TOKEN(HttpStatus.UNAUTHORIZED, "A0002", "유효하지 않는 토큰입니다."),
+    NOT_EXISTS_AUTHORIZATION(HttpStatus.UNAUTHORIZED, "A-003", "Authorization Header가 빈값 입니다."),
+    NOT_VALID_BEARER_GRANT_TYPE(HttpStatus.UNAUTHORIZED, "A-004", "인증 타입이 Bearer 타입이 아닙니다."),
+    NOT_ACCESS_AUTHORITY(HttpStatus.UNAUTHORIZED, "A-005", "접근 권한이 없습니다."),
+    FORBIDDEN_ADMIN(HttpStatus.UNAUTHORIZED, "A-006", "관리자 Role이 아닙니다."),
+
 
     // 기와집(게시판)
     BROAD_NOT_EXIST(HttpStatus.BAD_REQUEST,"B0001", "기와집이 존재하지 않습니다."),
 
     // 기와(방명록)
     POST_NOT_EXIST(HttpStatus.BAD_REQUEST, "P0001", "기와가 존재하지 않습니다."),
-
 
 
     ;
@@ -34,4 +38,5 @@ public enum ErrorCode {
         this.errorCode = errorCode;
         this.message = message;
     }
+
 }

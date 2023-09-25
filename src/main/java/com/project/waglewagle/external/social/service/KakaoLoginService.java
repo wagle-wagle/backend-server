@@ -1,8 +1,8 @@
 package com.project.waglewagle.external.social.service;
 
-import com.project.waglewagle.dto.LoginResponse;
+import com.project.waglewagle.dto.user.LoginResponse;
 import com.project.waglewagle.dto.TokenDto;
-import com.project.waglewagle.dto.UserInfoResponse;
+import com.project.waglewagle.dto.user.UserInfoResponse;
 import com.project.waglewagle.entity.MemberType;
 import com.project.waglewagle.entity.Users;
 import com.project.waglewagle.external.social.client.KakaoTokenClient;

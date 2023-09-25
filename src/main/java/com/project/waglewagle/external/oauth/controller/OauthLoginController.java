@@ -1,7 +1,7 @@
 package com.project.waglewagle.external.oauth.controller;
 
 
-import com.project.waglewagle.dto.LoginResponse;
+import com.project.waglewagle.dto.user.LoginResponse;
 import com.project.waglewagle.global.util.CommonResponse;
 import com.project.waglewagle.external.oauth.model.OauthAttributes;
 import com.project.waglewagle.external.social.service.KakaoLoginService;

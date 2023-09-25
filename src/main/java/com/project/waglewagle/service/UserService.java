@@ -1,6 +1,8 @@
 package com.project.waglewagle.service;
 
 import com.project.waglewagle.dto.*;
+import com.project.waglewagle.dto.user.LoginResponse;
+import com.project.waglewagle.dto.user.UserInfoResponse;
 import com.project.waglewagle.entity.MemberType;
 import com.project.waglewagle.entity.Users;
 import com.project.waglewagle.external.oauth.model.OauthAttributes;

@@ -29,11 +29,11 @@ public class Broad extends BaseTimeEntity {
     @Column
     private String title;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     @JoinColumn(name = "style_id")
     private BroadStyle broadStyle;
 
-    @OneToMany(mappedBy = "broad", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "broad", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Post> posts = new ArrayList<>();
 
 

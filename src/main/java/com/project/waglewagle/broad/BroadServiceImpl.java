@@ -4,8 +4,10 @@ import com.project.waglewagle.broad.dto.BroadPostRequest;
 import com.project.waglewagle.broad.dto.BroadResponse;
 import com.project.waglewagle.broad.dto.BroadStyleDTO;
 import com.project.waglewagle.broad.dto.BroadUpdateRequest;
+import com.project.waglewagle.entity.Users;
 import com.project.waglewagle.global.error.ErrorCode;
 import com.project.waglewagle.global.error.exception.EntityNotFoundException;
+import com.project.waglewagle.repository.UserRepository;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ public class BroadServiceImpl implements BroadService{
     private final BroadRepository broadRepository;
 
     private final BroadStyleRepository broadStyleRepository;
+
+    private final UserRepository userRepository;
     @Override
     public BroadResponse getBroad(Long broadId) {
         Broad broad = broadRepository.findById(broadId).orElseThrow(() -> new EntityNotFoundException(ErrorCode.BROAD_NOT_EXIST));
@@ -25,15 +29,23 @@ public class BroadServiceImpl implements BroadService{
     }
 
     @Override
-    public void postBroad(BroadPostRequest request) {
-        BroadStyle broadStyle = broadStyleRepository.save(request.getBroadSytle().toEntity());
+    public BroadResponse getBroadByUrl(String broadUrl) {
+        Broad broad = broadRepository.findByUrl(broadUrl).orElseThrow(() -> new EntityNotFoundException(ErrorCode.BROAD_NOT_EXIST));
+        return new BroadResponse(broad);
+    }
+
+    @Override
+    @Transactional
+    public void postBroad(BroadPostRequest request, Users users) {
+        BroadStyle broadStyle = request.getBroadStyle().toEntity();
         Broad broad = Broad.builder()
                 .version(request.getVersion())
                 .title(request.getTitle())
                 .broadStyle(broadStyle)
                 .url(request.getUrl())
                 .build();
-        broadRepository.save(broad);
+        users.createBroad(broadRepository.save(broad));
+        userRepository.save(users);
     }
 
     @Override

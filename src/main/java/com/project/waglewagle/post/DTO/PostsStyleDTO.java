@@ -23,7 +23,7 @@ public class PostsStyleDTO {
     private Integer sortCode;
 
     @JsonProperty("fontSize")
-    private Integer fontSize;
+    private Integer fontCode;
 
     @JsonProperty("fontColorCode")
     private Integer fontColorCode;
@@ -31,17 +31,17 @@ public class PostsStyleDTO {
     public PostStyle toEntity(){
         return PostStyle.builder()
                 .fontColorCode(this.fontColorCode)
-                .shape(this.shapeCode)
+                .shapeCode(this.shapeCode)
                 .sortCode(this.sortCode)
-                .fontSize(this.fontSize)
+                .fontCode(this.fontCode)
                 .build();
     }
 
     public PostsStyleDTO(PostStyle entity){
         this.id = entity.getId();
         this.fontColorCode = entity.getFontColorCode();
-        this.shapeCode = entity.getShape();
+        this.shapeCode = entity.getShapeCode();
         this.sortCode = entity.getSortCode();
-        this.fontSize = entity.getFontSize();
+        this.fontCode = entity.getFontCode();
     }
 }

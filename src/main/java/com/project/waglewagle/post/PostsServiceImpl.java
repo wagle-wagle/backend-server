@@ -7,6 +7,7 @@ import com.project.waglewagle.global.error.exception.EntityNotFoundException;
 import com.project.waglewagle.post.DTO.PostsRequest;
 import com.project.waglewagle.post.DTO.PostsResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
@@ -74,7 +75,13 @@ public class PostsServiceImpl implements PostsService{
 
     @Override
     public void deletePost(Long postId) {
-        postsRepository.deleteById(postId);
+        try {
+            postsRepository.deleteById(postId);
+        }
+        catch (EmptyResultDataAccessException e)
+        {
+            throw new EntityNotFoundException(ErrorCode.POST_NOT_EXIST);
+        }
 
     }
 }

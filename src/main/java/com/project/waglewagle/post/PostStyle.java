@@ -17,13 +17,13 @@ public class PostStyle {
     private Long id;
 
     @Column
-    private Integer shape;
+    private Integer shapeCode;
 
     @Column
     private Integer sortCode;
 
     @Column
-    private Integer fontSize;
+    private Integer fontCode;
 
     @Column
     private Integer fontColorCode;

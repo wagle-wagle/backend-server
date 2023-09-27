@@ -18,7 +18,7 @@ public class NaverTokenDto {
     @ToString
     @Builder @Getter
     public static class Response {
-        private String token_type;
+        private String token_type; // Bearer
         private String access_token;
         private String refresh_token;
         private Integer expires_in; // 접근토큰 유효기간(초)

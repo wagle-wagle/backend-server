@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@RequestMapping(value = "/api/v1")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -39,8 +40,6 @@ public class UserController {
     }
 
 
-
-    // 회원가입
     @PostMapping("/users/signup")
     public ResponseEntity<CommonResponse<Object>> signup(@Valid @RequestBody SignupRequest registerDto) {
 

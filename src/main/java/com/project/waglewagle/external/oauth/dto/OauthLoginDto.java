@@ -10,6 +10,7 @@ public class OauthLoginDto {
     public static class Request{
         private String memberType;
         private String code;
+        private String state;
     }
 
     @Getter @Setter

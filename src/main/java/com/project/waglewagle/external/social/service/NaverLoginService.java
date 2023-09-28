@@ -31,7 +31,7 @@ import java.lang.reflect.Member;
 import java.util.Optional;
 
 @Slf4j
-@Service
+//@Service
 @RequiredArgsConstructor
 public class NaverLoginService {
 
@@ -134,6 +134,7 @@ public class NaverLoginService {
             LoginResponse loginResponse = LoginResponse.builder()
                     .userId(findUser.get().getId())
                     .userName(findUser.get().getUserName())
+                    .boardId(findUser.get().getBroad().getId())
                     .isExistHopae(findUser.get().getUserName() == null ? false : true)
                     .accessToken(token.getAccessToken())
                     .build();

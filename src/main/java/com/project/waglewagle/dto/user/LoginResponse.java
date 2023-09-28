@@ -8,14 +8,16 @@ public class LoginResponse {
     private String userName;
     private Boolean isExistHopae;
     private String accessToken;
+    private Long boardId;
 
 
     @Builder
-    public LoginResponse(Long userId, String accessToken, String userName, boolean isExistHopae){
+    public LoginResponse(Long userId, Long boardId,String accessToken, String userName, boolean isExistHopae){
         this.userId = userId;
         this.userName = userName;
         this.isExistHopae = isExistHopae;
         this.accessToken = accessToken;
+        this.boardId = boardId;
     }
 
 

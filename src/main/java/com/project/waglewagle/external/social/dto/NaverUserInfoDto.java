@@ -3,10 +3,14 @@ package com.project.waglewagle.external.social.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 public class NaverUserInfoDto {
 
-    private String resultcode;
-    private String message;
+    private String resultcode; // 결과코드
+    private String message;    // 결과 메세지
+    private Response response;
+
 
     @Getter
     @Setter

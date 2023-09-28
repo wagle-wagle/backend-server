@@ -19,7 +19,7 @@ public class OauthLoginController {
 
     //private final OauthLoginService oauthLoginService;
     private final KakaoLoginService kakaoLoginService;
-    private final NaverLoginService naverLoginService;
+//    private final NaverLoginService naverLoginService;
     //private final GoogleLoginService googleLoginService;
 
     // 카카오 로그인
@@ -33,14 +33,14 @@ public class OauthLoginController {
 
 
     // 네이버 로그인
-    @PostMapping("/naver")
-    public CommonResponse<LoginResponse> naverSocialLogin(@RequestBody OauthLoginDto.Request loginDto){
-
-        String accessToken = naverLoginService.getAccessToken(loginDto.getCode(), loginDto.getState());
-        OauthAttributes naverUserInfo = naverLoginService.getUserInfo(accessToken);
-        LoginResponse loginResponse = naverLoginService.emailExist(naverUserInfo);
-        return ApiResponse.createSuccess("네이버 social 로그인 성공적으로 완료되었습니다. ", HttpStatus.OK, loginResponse);
-    }
+//    @PostMapping("/naver")
+//    public CommonResponse<LoginResponse> naverSocialLogin(@RequestBody OauthLoginDto.Request loginDto){
+//
+//        String accessToken = naverLoginService.getAccessToken(loginDto.getCode(), loginDto.getState());
+//        OauthAttributes naverUserInfo = naverLoginService.getUserInfo(accessToken);
+//        LoginResponse loginResponse = naverLoginService.emailExist(naverUserInfo);
+//        return ApiResponse.createSuccess("네이버 social 로그인 성공적으로 완료되었습니다. ", HttpStatus.OK, loginResponse);
+//    }
 
 
     // 구글 로그인

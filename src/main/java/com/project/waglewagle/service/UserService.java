@@ -64,6 +64,7 @@ public class UserService {
         LoginResponse loginResponse = LoginResponse.builder()
                 .userId(findUser.get().getId())
                 .userName(findUser.get().getUserName())
+                .boardId(findUser.get().getBroad().getId())
                 .accessToken(tokenDto.getAccessToken())
                 .isExistHopae(findUser.get().getUserName() == null ? false : true)
                 .build();

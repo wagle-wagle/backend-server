@@ -1,9 +1,6 @@
 package com.project.waglewagle.broad;
 
-import com.project.waglewagle.broad.dto.BroadPostRequest;
-import com.project.waglewagle.broad.dto.BroadResponse;
-import com.project.waglewagle.broad.dto.BroadStyleDTO;
-import com.project.waglewagle.broad.dto.BroadUpdateRequest;
+import com.project.waglewagle.broad.dto.*;
 import com.project.waglewagle.global.config.security.PrincipalDetail;
 import com.project.waglewagle.global.util.ApiResponse;
 import com.project.waglewagle.global.util.CommonResponse;
@@ -43,9 +40,9 @@ public class BroadController {
     }
 
     @PostMapping("/broads")
-    public CommonResponse<Void> postBroad(@RequestBody BroadPostRequest request, @AuthenticationPrincipal PrincipalDetail principalDetail){
-        broadService.postBroad(request,principalDetail.getUser());
-        return ApiResponse.createSuccess("기와집을 성공적으로 생성했습니다.", HttpStatus.CREATED,null);
+    public CommonResponse<BroadPostResponse> postBroad(@RequestBody BroadPostRequest request, @AuthenticationPrincipal PrincipalDetail principalDetail){
+        BroadPostResponse broadPostResponse = broadService.postBroad(request,principalDetail.getUser());
+        return ApiResponse.createSuccess("기와집을 성공적으로 생성했습니다.", HttpStatus.CREATED, broadPostResponse);
     }
 
     @PatchMapping("/broads/{BroadId}")

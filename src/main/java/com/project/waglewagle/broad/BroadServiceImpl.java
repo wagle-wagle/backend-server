@@ -1,9 +1,6 @@
 package com.project.waglewagle.broad;
 
-import com.project.waglewagle.broad.dto.BroadPostRequest;
-import com.project.waglewagle.broad.dto.BroadResponse;
-import com.project.waglewagle.broad.dto.BroadStyleDTO;
-import com.project.waglewagle.broad.dto.BroadUpdateRequest;
+import com.project.waglewagle.broad.dto.*;
 import com.project.waglewagle.entity.Users;
 import com.project.waglewagle.global.error.ErrorCode;
 import com.project.waglewagle.global.error.exception.EntityNotFoundException;
@@ -36,7 +33,7 @@ public class BroadServiceImpl implements BroadService{
 
     @Override
     @Transactional
-    public void postBroad(BroadPostRequest request, Users users) {
+    public BroadPostResponse postBroad(BroadPostRequest request, Users users) {
         BroadStyle broadStyle = request.getBroadStyle().toEntity();
         Broad broad = Broad.builder()
                 .version(request.getVersion())
@@ -46,6 +43,7 @@ public class BroadServiceImpl implements BroadService{
                 .build();
         users.createBroad(broadRepository.save(broad));
         userRepository.save(users);
+        return new BroadPostResponse(users.getBroad().getId());
     }
 
     @Override

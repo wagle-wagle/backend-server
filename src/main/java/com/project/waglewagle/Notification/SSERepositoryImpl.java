@@ -43,7 +43,7 @@ public class SSERepositoryImpl implements SSERepository{
 
     @Override
     public Map<String, Object> findAllEventCacheStartWithId(String id) {
-        Set<String> list = redisTemplate.keys(id);
+        Set<String> list = redisTemplate.keys(id+"*");
         Map<String, Object> result = new HashMap<>();
         for (String element : list) {
             result.put(element,valueOperations.get(element));
@@ -64,5 +64,10 @@ public class SSERepositoryImpl implements SSERepository{
         emitters.forEach((key, emitter) -> {
             if (key.startsWith(id)) emitters.remove(key);
         });
+    }
+
+    @Override
+    public void deleteCacheById(String id) {
+        redisTemplate.delete(id);
     }
 }

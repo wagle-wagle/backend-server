@@ -14,7 +14,7 @@ import java.util.Map;
 public class SSEServiceImpl implements SSEService{
     private static final Long DEFAULT_TIMEOUT = 120L * 1000 * 60;
     private final SSERepository sseRepository;
-    public SseEmitter connection(HttpServletResponse response, String email) {
+    public SseEmitter connection(String email) {
         // 1
         String id = email;
 
@@ -46,8 +46,9 @@ public class SSEServiceImpl implements SSEService{
                     .name("sse")
                     .data(data));
         } catch (IOException exception) {
+            System.out.println("에러");
             sseRepository.deleteAllStartByWithId(id);
-            throw new RuntimeException("연결 오류!");
+            connection(id);
         }
     }
     public void send(String targetEmail, String userName, String type) {
@@ -66,4 +67,8 @@ public class SSEServiceImpl implements SSEService{
         );
     }
 
+    @Override
+    public void delete(String id) {
+        sseRepository.deleteCacheById(id);
+    }
 }

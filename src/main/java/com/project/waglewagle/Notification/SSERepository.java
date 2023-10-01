@@ -16,6 +16,8 @@ public interface SSERepository {
     Map<String, Object> findAllEventCacheStartWithId(String id);
     void deleteAllStartByWithId(String id);
 
+    void deleteCacheById(String id);
+
 
 
 }

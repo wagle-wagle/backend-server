@@ -3,6 +3,7 @@ package com.project.waglewagle.broad;
 import com.project.waglewagle.broad.dto.*;
 import com.project.waglewagle.entity.Users;
 import com.project.waglewagle.global.error.ErrorCode;
+import com.project.waglewagle.global.error.exception.BusinessException;
 import com.project.waglewagle.global.error.exception.EntityNotFoundException;
 import com.project.waglewagle.repository.UserRepository;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,9 @@ public class BroadServiceImpl implements BroadService{
     @Override
     @Transactional
     public BroadPostResponse postBroad(BroadPostRequest request, Users users) {
+        if(users.getBroad() != null){
+            throw new BusinessException(ErrorCode.ALREADY_MAKED_BROAD);
+        }
         BroadStyle broadStyle = request.getBroadStyle().toEntity();
         Broad broad = Broad.builder()
                 .version(request.getVersion())

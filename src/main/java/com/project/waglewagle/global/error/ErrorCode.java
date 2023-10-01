@@ -23,9 +23,14 @@ public enum ErrorCode {
 
     // 기와집(게시판)
     BROAD_NOT_EXIST(HttpStatus.BAD_REQUEST,"B0001", "기와집이 존재하지 않습니다."),
+    ALREADY_MAKED_BROAD(HttpStatus.BAD_REQUEST,"B0002","이미 기와집이 있는 회원입니다."),
+
 
     // 기와(방명록)
     POST_NOT_EXIST(HttpStatus.BAD_REQUEST, "P0001", "기와가 존재하지 않습니다."),
+
+    // 유효성검사
+    REQUEST_NOT_VALID(HttpStatus.BAD_REQUEST, "R0001", "잘못된 REQUEST 형식입니다."),
 
 
     ;

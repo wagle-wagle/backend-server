@@ -60,7 +60,9 @@ public class UserService {
         }
 
         TokenDto tokenDto = authenticate(findUser.get().getId(), email, password);
-
+        
+        try {
+        
         LoginResponse loginResponse = LoginResponse.builder()
                 .userId(findUser.get().getId())
                 .userName(findUser.get().getUserName())
@@ -68,6 +70,15 @@ public class UserService {
                 .accessToken(tokenDto.getAccessToken())
                 .isExistHopae(findUser.get().getUserName() == null ? false : true)
                 .build();
+        }
+        catch(Exception e){
+            LoginResponse loginResponse = LoginResponse.builder()
+                .userId(findUser.get().getId())
+                .userName(findUser.get().getUserName())
+                .accessToken(tokenDto.getAccessToken())
+                .isExistHopae(findUser.get().getUserName() == null ? false : true)
+                .build();
+        }
         return loginResponse;
     }
 

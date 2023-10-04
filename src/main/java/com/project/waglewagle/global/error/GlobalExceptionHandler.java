@@ -57,8 +57,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public CommonResponse methodValidException(MethodArgumentNotValidException e){
-        String message = e.getBindingResult().getAllErrors().get(0).getDefaultMessage().toString();
-        return ApiResponse.createBusinessFail(ErrorCode.REQUEST_NOT_VALID.getHttpStatus(),ErrorCode.REQUEST_NOT_VALID);
+        log.error("MethodArgumentNotValidException ",e);
+        return ApiResponse.createFail(HttpStatus.BAD_REQUEST,"양식을 맞춰주세요.");
     }
 
 }

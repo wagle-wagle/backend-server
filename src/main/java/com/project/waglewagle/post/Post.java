@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @AllArgsConstructor
@@ -33,9 +34,16 @@ public class Post extends BaseTimeEntity {
     @Column
     private String nickName;
 
+    @Column
+    @ColumnDefault("false")
+    private Boolean isRead;
+
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "style_id")
     private PostStyle postStyle;
 
+    public void read(){
+        this.isRead = true;
+    }
 
 }

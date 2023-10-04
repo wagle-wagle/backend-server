@@ -30,7 +30,10 @@ public class SSEServiceImpl implements SSEService{
 
         // 4
         // 클라이언트가 미수신한 Event 목록이 존재할 경우 전송하여 Event 유실을 예방
-        Map<String, Object> events = sseRepository.findAllEventCacheStartWithId(String.valueOf(email));
+        Map<String, Notification> Notievents = sseRepository.findAllEventCacheStartWithId("ALL");
+        Notievents.entrySet().stream()
+                .forEach(entry -> sendToClient(emitter, entry.getKey(), entry.getValue()));
+        Map<String, Notification> events = sseRepository.findAllEventCacheStartWithId(String.valueOf(email));
         events.entrySet().stream()
                 .forEach(entry -> sendToClient(emitter, entry.getKey(), entry.getValue()));
 
@@ -51,8 +54,8 @@ public class SSEServiceImpl implements SSEService{
             connection(id);
         }
     }
-    public void send(String targetEmail, String userName, String type) {
-        Notification notification = new Notification(System.currentTimeMillis(),userName,type);
+    public void send(String targetEmail, String userName,Integer styleType, String Type) {
+        Notification notification = new Notification("기와가 도착했오",userName,null,"new");
         String id = String.valueOf(targetEmail);
 
         // 로그인 한 유저의 SseEmitter 모두 가져오기
@@ -65,6 +68,12 @@ public class SSEServiceImpl implements SSEService{
                     sendToClient(emitter, key, notification);
                 }
         );
+    }
+
+    @Override
+    public void sendNoti(String title, String message) {
+        Notification notification = new Notification(title,null, message, "Notification");
+        sseRepository.saveEventCache("ALL", notification);
     }
 
     @Override

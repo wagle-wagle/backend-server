@@ -25,7 +25,7 @@ public class SSEController {
 
     @PostMapping(value = "/")
     public void test(){
-        sseService.send("qnrms2898@naver.com","케인인","new");
+        sseService.sendNoti("test","test");
     }
 
     @DeleteMapping(value = "/")

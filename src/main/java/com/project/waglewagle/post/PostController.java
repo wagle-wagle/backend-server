@@ -4,6 +4,7 @@ import com.project.waglewagle.global.util.ApiResponse;
 import com.project.waglewagle.global.util.CommonResponse;
 import com.project.waglewagle.post.DTO.PostsRequest;
 import com.project.waglewagle.post.DTO.PostsResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public CommonResponse<Void> createPosts(@RequestBody PostsRequest request){
+    public CommonResponse<Void> createPosts(@Valid @RequestBody PostsRequest request){
         postsService.createPost(request);
         return ApiResponse.createSuccess("기와를 성공적으로 등록했습니다.", HttpStatus.CREATED,null);
     }
@@ -42,5 +43,11 @@ public class PostController {
     public CommonResponse<Void> deletePosts(@PathVariable("postId") Long postId){
         postsService.deletePost(postId);
         return ApiResponse.createSuccess("기와를 성공적으로 삭제했습니다.", HttpStatus.NO_CONTENT,null);
+    }
+
+    @PatchMapping("/posts/{postId}")
+    public CommonResponse readPost(@PathVariable("postId") Long postId){
+        postsService.readPost(postId);
+        return ApiResponse.createSuccess("기와 읽음처리 완료.", HttpStatus.CREATED,null);
     }
 }

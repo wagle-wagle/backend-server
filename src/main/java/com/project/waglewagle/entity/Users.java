@@ -55,6 +55,10 @@ public class Users extends BaseTimeEntity {
         this.userName = hopae;
     }
 
+    public void updatePassword(String password){
+        this.password = password;
+    }
+
     public void createBroad(Broad broad){
         this.broad = broad;
     }

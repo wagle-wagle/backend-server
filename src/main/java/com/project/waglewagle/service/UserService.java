@@ -8,6 +8,7 @@ import com.project.waglewagle.entity.Users;
 import com.project.waglewagle.external.oauth.model.OauthAttributes;
 import com.project.waglewagle.global.config.jwt.TokenService;
 import com.project.waglewagle.global.error.ErrorCode;
+import com.project.waglewagle.global.error.exception.BusinessException;
 import com.project.waglewagle.global.error.exception.DuplicateMemberException;
 import com.project.waglewagle.global.error.exception.EntityNotFoundException;
 import com.project.waglewagle.repository.UserRepository;
@@ -26,7 +27,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserService {
-
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenService tokenProvider;
     private final UserRepository userRepository;
@@ -73,22 +73,7 @@ public class UserService {
     }
 
 
-
-
-    @Transactional
-    public UserInfoResponse updateHopae(Long userId, String username){
-        Optional<Users> user =  userRepository.findById(userId);
-        if(user.isEmpty()){
-            throw new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXIST);
-        }
-        user.get().updateUsername(username);
-        UserInfoResponse userResponseDto = UserInfoResponse.of(user.get());
-        return userResponseDto;
-    }
-
-
-
-    // 일반
+    // 회원가입(일반)
     @Transactional
     public UserInfoResponse signup(String email, String password) {
         findMemberByEmail(email);
@@ -103,7 +88,7 @@ public class UserService {
     }
 
 
-    // 소셜
+    // 회원가입(소셜)
     @Transactional
     public UserInfoResponse signup(OauthAttributes userInfo) {
         Users socialUser = Users.builder()
@@ -125,6 +110,62 @@ public class UserService {
             throw new DuplicateMemberException(ErrorCode.ALREADY_REGISTERED_MEMBER);
         }
         return user;
+    }
+
+
+    @Transactional
+    public UserInfoResponse updateHopae(Long userId, String username){
+        Optional<Users> user =  userRepository.findById(userId);
+        if(user.isEmpty()){
+            throw new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXIST);
+        }
+        user.get().updateUsername(username);
+        UserInfoResponse userResponseDto = UserInfoResponse.of(user.get());
+        return userResponseDto;
+    }
+
+
+    public boolean verifyPassword(Long userId, String password){
+        Optional<Users> users =  userRepository.findById(userId);
+        if(users.isEmpty()){
+            throw new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXIST);
+        }
+        boolean matches = passwordEncoder.matches(password, users.get().getPassword());
+        if(!matches){
+            throw new BusinessException(ErrorCode.NOT_MATCHED_PASSWORD);
+        }
+        return matches;
+    }
+
+
+    public boolean verifyEmail(String email){
+        Optional<Users> user = userRepository.findByEmail(email);
+        boolean isExistEmail = user.isEmpty() ? false : true;
+        if(!isExistEmail){
+            throw new BusinessException(ErrorCode.EMAIL_NOT_EXIST);
+        }
+        return isExistEmail;
+    }
+
+    @Transactional
+    public Users updatePassword(Long userId, String password){
+        Optional<Users> users =  userRepository.findById(userId);
+        if(users.isEmpty()){
+            throw new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXIST);
+        }
+        users.get().updatePassword(passwordEncoder.encode(password));
+        return users.get();
+    }
+
+
+    @Transactional
+    public Users deleteUser(Long userId){
+        Optional<Users> users =  userRepository.findById(userId);
+        if(users.isEmpty()){
+            throw new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXIST);
+        }
+        userRepository.delete(users.get());
+        return users.get();
     }
 
 }

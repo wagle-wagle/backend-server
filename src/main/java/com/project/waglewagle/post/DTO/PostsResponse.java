@@ -19,6 +19,8 @@ public class PostsResponse {
 
     private Long createdTime;
 
+    private Boolean isRead;
+
     public PostsResponse(Post entity) {
         this.id = entity.getId();
         this.nickName = entity.getNickName();
@@ -26,5 +28,6 @@ public class PostsResponse {
         this.message = entity.getMessage();
         this.postStyle = new PostsStyleDTO(entity.getPostStyle());
         this.createdTime = entity.getCreatedTime();
+        this.isRead = entity.getIsRead();
     }
 }

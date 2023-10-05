@@ -11,9 +11,10 @@ public interface SSERepository {
     SseEmitter save(String id, SseEmitter sseEmitter);
 
     void saveEventCache(String id, Notification event);
+
     Map<String, SseEmitter> findAllStartById(String id);
 
-    Map<String, Object> findAllEventCacheStartWithId(String id);
+    Map<String, Notification> findAllEventCacheStartWithId(String id, Map<String, Notification> map);
     void deleteAllStartByWithId(String id);
 
     void deleteCacheById(String id);

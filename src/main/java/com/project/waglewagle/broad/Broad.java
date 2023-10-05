@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,4 +44,5 @@ public class Broad extends BaseTimeEntity {
     public void updateTitle(String newTitle) {
         this.title = newTitle;
     }
+
 }

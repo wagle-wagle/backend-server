@@ -1,22 +1,18 @@
 package com.project.waglewagle.Notification;
 
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Notification {
-    private Long unixTime;
+    private String title;
 
     private String userName;
 
+    private String message;
+
     private String type;
 
-    public Notification(Long unixTime, String userName, String type) {
-        this.unixTime = unixTime;
-        this.userName = userName;
-        this.type = type;
-    }
-
-    public String toString(){
-        return unixTime+","+userName+","+type;
-    }
 }

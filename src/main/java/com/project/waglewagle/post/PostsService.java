@@ -16,5 +16,7 @@ public interface PostsService {
 
     void deletePost(Long postId);
 
+    void readPost(Long postId);
+
 
 }

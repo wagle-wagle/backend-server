@@ -1,8 +1,10 @@
 package com.project.waglewagle.Notification;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -34,21 +36,28 @@ public class SSERepositoryImpl implements SSERepository{
         return sseEmitter;
     }
 
+    @SneakyThrows
     @Override
     public void saveEventCache(String id, Notification event) {
         String key = id+"_"+System.currentTimeMillis();
-        valueOperations.set(key,event.toString());
-        redisTemplate.expire(key,1,TimeUnit.DAYS);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        valueOperations.set(key,mapper.writeValueAsString(event));
+        if(event.getType() == "new"){
+            redisTemplate.expire(key,1,TimeUnit.DAYS);
+        }
     }
 
+    @SneakyThrows
     @Override
-    public Map<String, Object> findAllEventCacheStartWithId(String id) {
+    public Map<String, Notification> findAllEventCacheStartWithId(String id, Map<String, Notification> map) {
         Set<String> list = redisTemplate.keys(id+"*");
-        Map<String, Object> result = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         for (String element : list) {
-            result.put(element,valueOperations.get(element));
+            map.put(element.substring(element.lastIndexOf("_")+1),mapper.readValue(valueOperations.get(element).toString(),Notification.class));
         }
-        return result;
+        return map;
     }
 
     @Override

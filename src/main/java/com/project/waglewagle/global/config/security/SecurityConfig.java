@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +17,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
@@ -36,13 +38,7 @@ public class SecurityConfig {
                 .and()
                 .formLogin().disable()
 
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(authorize ->
-                        authorize
-                                .requestMatchers("/api/v1/manager/**").hasAnyRole("ADMIN")
-                                .requestMatchers("/api/v1/admin/**").hasAnyRole("ADMIN")
-                                .requestMatchers("/api/v1/test").hasAnyRole("USER")
-                                .anyRequest().permitAll());
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.csrf().disable();
         return http.build();
     }

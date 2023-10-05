@@ -1,7 +1,10 @@
 package com.project.waglewagle.controller;
 
 import com.project.waglewagle.dto.*;
+import com.project.waglewagle.dto.mypage.UpdatePasswordRequest;
 import com.project.waglewagle.dto.user.*;
+import com.project.waglewagle.global.config.jwt.TokenService;
+import com.project.waglewagle.global.config.security.PrincipalDetail;
 import com.project.waglewagle.global.util.CommonResponse;
 import com.project.waglewagle.entity.Users;
 import com.project.waglewagle.global.config.jwt.JwtFilter;
@@ -12,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -23,7 +27,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserController {
 
+    public static final String TOKEN_PREFIX = "Bearer ";
+    private final TokenService tokenService;
     private final UserService userService;
+
 
     @PostMapping("/users/login")
     public ResponseEntity<CommonResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest loginDto) {
@@ -62,13 +69,10 @@ public class UserController {
     }
 
 
-
-
     @PostMapping("/users/hopae")
     public CommonResponse<UserInfoResponse> updateHopae(@RequestBody HopaeRequest hopaeDto){
         UserInfoResponse userResponse = userService.updateHopae(hopaeDto.getUserId(), hopaeDto.getUserName());
         return ApiResponse.createSuccess("호패 등록이 성공적으로 완료되었습니다.", HttpStatus.OK, userResponse);
-
     }
 
 
@@ -78,6 +82,55 @@ public class UserController {
         return ApiResponse.createSuccess("사용 가능한 이메일 입니다.", HttpStatus.OK, null);
     }
 
+
+
+    @PostMapping("/users/password/temporary-email")
+    public CommonResponse<Void> sendEmailTemporaryPassword(){
+        return ApiResponse.createSuccess("님의 이메일로 임시 비밀번호 발급되었습니다.", HttpStatus.OK, null);
+    }
+
+
+    @GetMapping("/users/validation")
+    public CommonResponse<Void> verifyEmail(@RequestParam("email") String email){
+        boolean isExistEmail = userService.verifyEmail(email);
+        return ApiResponse.createSuccess("성공적으로 이메일 조회 완료되었습니다. ", HttpStatus.OK, null);
+    }
+
+
+    @GetMapping("/users/password/validation")
+    public CommonResponse<Boolean> verifyPassword(
+            @RequestHeader("Authorization") String accessToken,
+            @AuthenticationPrincipal PrincipalDetail user, @RequestBody UpdatePasswordRequest updatePasswordRequestDto){
+        //Long jwtUserId = tokenService.getUserId(accessToken.substring(TOKEN_PREFIX.length()));
+        //boolean result = userService.verifyPassword(jwtUserId, updatePasswordRequestDto.getPassword());
+        boolean result = userService.verifyPassword(user.getUser().getId(), updatePasswordRequestDto.getPassword());
+        return ApiResponse.createSuccess("비밀번호 정상적으로 확인되었습니다.", HttpStatus.OK, null);
+    }
+
+
+    @PutMapping("/users/password/change")
+    public CommonResponse<Void> updatePassword(
+            @RequestHeader("Authorization") String accessToken,
+            @AuthenticationPrincipal PrincipalDetail user, @RequestBody UpdatePasswordRequest updatePasswordRequestDto){
+        //Long jwtUserId = tokenService.getUserId(accessToken.substring(TOKEN_PREFIX.length()));
+        //userService.updatePassword(jwtUserId, updatePasswordRequestDto.getPassword());
+        userService.updatePassword(user.getUser().getId(), updatePasswordRequestDto.getPassword());
+        return ApiResponse.createSuccess("비밀번호 변경 완료 되었습니다.", HttpStatus.OK, null);
+    }
+
+
+    @DeleteMapping("/users/{userId}")
+    public CommonResponse<Void> deleteUserAccount(
+            @RequestHeader("Authorization") String accessToken,
+            @AuthenticationPrincipal PrincipalDetail user){
+        //Long jwtUserId = tokenService.getUserId(accessToken.substring(TOKEN_PREFIX.length()));
+        //Users users = userService.deleteUser(jwtUserId);
+        //result.put("userId", jwtUserId);
+        Users users = userService.deleteUser(user.getUser().getId());
+        Map<String, Long> result = new HashMap<>();
+        result.put("userId", users.getId());
+        return ApiResponse.createSuccess("회원탈퇴 정상적으로 완료되었습니다.", HttpStatus.OK, result);
+    }
 
 
 

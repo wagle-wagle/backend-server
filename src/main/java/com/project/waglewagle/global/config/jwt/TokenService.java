@@ -1,6 +1,7 @@
 package com.project.waglewagle.global.config.jwt;
 
 import com.project.waglewagle.dto.TokenDto;
+import com.project.waglewagle.dto.user.UserInfoResponse;
 import com.project.waglewagle.entity.Users;
 import com.project.waglewagle.global.config.security.CustomUserDetailService;
 import com.project.waglewagle.global.config.security.PrincipalDetail;
@@ -93,4 +94,23 @@ public class TokenService {
         }
         return false;
     }
+
+    public Claims getClaims(String token){
+        try {
+         return Jwts.parserBuilder()
+                 .setSigningKey(key)
+                 .build()
+                 .parseClaimsJws(token)
+                 .getBody();
+        }catch (ExpiredJwtException e){
+            return e.getClaims();
+        }
+    }
+
+    public Long getUserId(String token){
+        return Long.valueOf((Integer)getClaims(token).get(USER_ID));
+    }
+
+
+
 }

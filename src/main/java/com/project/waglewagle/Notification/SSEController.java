@@ -1,5 +1,6 @@
 package com.project.waglewagle.Notification;
 
+import com.project.waglewagle.Notification.DTO.NotificationRequest;
 import com.project.waglewagle.global.config.security.PrincipalDetail;
 import com.project.waglewagle.global.util.ApiResponse;
 import com.project.waglewagle.global.util.CommonResponse;
@@ -23,12 +24,12 @@ public class SSEController {
         return new ResponseEntity<>(sseService.connection(principalDetail.getUsername()), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/")
-    public void test(){
-        sseService.sendNoti("test","test");
+    @PostMapping
+    public void test(@RequestBody NotificationRequest request){
+        sseService.sendNoti(request.getTitle(),request.getMessage());
     }
 
-    @DeleteMapping(value = "/")
+    @DeleteMapping
     public CommonResponse deleteNoti(@RequestParam("id") String id){
         sseService.delete(id);
         return ApiResponse.createSuccess("알림 삭제 완료", HttpStatus.OK,null);

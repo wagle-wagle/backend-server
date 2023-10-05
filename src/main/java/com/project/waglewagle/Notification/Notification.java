@@ -1,8 +1,11 @@
 package com.project.waglewagle.Notification;
 
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Notification {
     private String title;
 
@@ -11,12 +14,5 @@ public class Notification {
     private String message;
 
     private String type;
-
-    public Notification(String title, String userName, String message, String type) {
-        this.title = title;
-        this.userName = userName;
-        this.message = message;
-        this.type = type;
-    }
 
 }

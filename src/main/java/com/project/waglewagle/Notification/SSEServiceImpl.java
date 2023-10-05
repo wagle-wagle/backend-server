@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 @RequiredArgsConstructor
@@ -30,10 +32,10 @@ public class SSEServiceImpl implements SSEService{
 
         // 4
         // 클라이언트가 미수신한 Event 목록이 존재할 경우 전송하여 Event 유실을 예방
-        Map<String, Notification> Notievents = sseRepository.findAllEventCacheStartWithId("ALL");
-        Notievents.entrySet().stream()
-                .forEach(entry -> sendToClient(emitter, entry.getKey(), entry.getValue()));
-        Map<String, Notification> events = sseRepository.findAllEventCacheStartWithId(String.valueOf(email));
+        Map<String, Notification> Notievents = new HashMap<>();
+        Notievents = sseRepository.findAllEventCacheStartWithId("ALL", Notievents);
+        Notievents = sseRepository.findAllEventCacheStartWithId(String.valueOf(email),Notievents);
+        Map<String, Notification> events = new TreeMap<>(Notievents);
         events.entrySet().stream()
                 .forEach(entry -> sendToClient(emitter, entry.getKey(), entry.getValue()));
 

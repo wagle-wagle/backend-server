@@ -50,16 +50,14 @@ public class SSERepositoryImpl implements SSERepository{
 
     @SneakyThrows
     @Override
-    public Map<String, Notification> findAllEventCacheStartWithId(String id) {
+    public Map<String, Notification> findAllEventCacheStartWithId(String id, Map<String, Notification> map) {
         Set<String> list = redisTemplate.keys(id+"*");
-        Map<String, Notification> result = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         for (String element : list) {
-
-            result.put(element,mapper.readValue(element,Notification.class));
+            map.put(element.substring(element.lastIndexOf("_")+1),mapper.readValue(valueOperations.get(element).toString(),Notification.class));
         }
-        return result;
+        return map;
     }
 
     @Override

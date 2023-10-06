@@ -15,7 +15,7 @@ import java.util.TreeMap;
 @Service
 @RequiredArgsConstructor
 public class SSEServiceImpl implements SSEService{
-    private static final Long DEFAULT_TIMEOUT = 120L * 1000 * 60;
+    private static final Long DEFAULT_TIMEOUT = 120L * 1000 * 60 * 12;
     private final SSERepository sseRepository;
     public SseEmitter connection(String email) {
         // 1

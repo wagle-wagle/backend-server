@@ -69,6 +69,7 @@ public class PostsServiceImpl implements PostsService{
                 .message(postsRequest.getMessage())
                 .version(postsRequest.getVersion())
                 .postStyle(postStyle)
+                .isRead(false)
                 .nickName(postsRequest.getNickName())
                 .build();
         try {

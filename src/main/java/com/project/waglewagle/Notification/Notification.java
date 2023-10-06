@@ -7,11 +7,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Notification {
+
     private String title;
 
     private String userName;
 
     private String message;
+
+    private Integer shapeType;
 
     private String type;
 

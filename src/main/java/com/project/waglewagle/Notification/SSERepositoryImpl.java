@@ -3,6 +3,7 @@ package com.project.waglewagle.Notification;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.waglewagle.Notification.DTO.NotificationResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.redis.core.HashOperations;
@@ -38,8 +39,7 @@ public class SSERepositoryImpl implements SSERepository{
 
     @SneakyThrows
     @Override
-    public void saveEventCache(String id, Notification event) {
-        String key = id+"_"+System.currentTimeMillis();
+    public void saveEventCache(String key, Notification event) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         valueOperations.set(key,mapper.writeValueAsString(event));
@@ -50,12 +50,14 @@ public class SSERepositoryImpl implements SSERepository{
 
     @SneakyThrows
     @Override
-    public Map<String, Notification> findAllEventCacheStartWithId(String id, Map<String, Notification> map) {
+    public Map<String, NotificationResponse> findAllEventCacheStartWithId(String id, Map<String, NotificationResponse> map) {
         Set<String> list = redisTemplate.keys(id+"*");
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         for (String element : list) {
-            map.put(element.substring(element.lastIndexOf("_")+1),mapper.readValue(valueOperations.get(element).toString(),Notification.class));
+            NotificationResponse notificationResponse = mapper.readValue(valueOperations.get(element).toString(),NotificationResponse.class);
+            notificationResponse.setId(element);
+            map.put(element.substring(element.lastIndexOf("_")+1),notificationResponse);
         }
         return map;
     }
@@ -64,6 +66,13 @@ public class SSERepositoryImpl implements SSERepository{
     public Map<String, SseEmitter> findAllStartById(String id) {
         return emitters.entrySet().stream()
                 .filter(entry -> entry.getKey().startsWith(id))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+    }
+
+    @Override
+    public Map<String, SseEmitter> findAll() {
+        return emitters.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     }

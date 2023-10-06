@@ -1,5 +1,6 @@
 package com.project.waglewagle.Notification;
 
+import com.project.waglewagle.Notification.DTO.NotificationResponse;
 import jakarta.persistence.SecondaryTable;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +33,10 @@ public class SSEServiceImpl implements SSEService{
 
         // 4
         // 클라이언트가 미수신한 Event 목록이 존재할 경우 전송하여 Event 유실을 예방
-        Map<String, Notification> Notievents = new HashMap<>();
+        Map<String, NotificationResponse> Notievents = new HashMap<>();
         Notievents = sseRepository.findAllEventCacheStartWithId("ALL", Notievents);
         Notievents = sseRepository.findAllEventCacheStartWithId(String.valueOf(email),Notievents);
-        Map<String, Notification> events = new TreeMap<>(Notievents);
+        Map<String, NotificationResponse> events = new TreeMap<>(Notievents);
         events.entrySet().stream()
                 .forEach(entry -> sendToClient(emitter, entry.getKey(), entry.getValue()));
 
@@ -57,25 +58,39 @@ public class SSEServiceImpl implements SSEService{
         }
     }
     public void send(String targetEmail, String userName,Integer styleType, String Type) {
-        Notification notification = new Notification("기와가 도착했오",userName,null,"new");
+        Notification notification = new Notification("기와가 도착했오",userName,null, styleType,"new");
+        NotificationResponse notificationResponse = new NotificationResponse();
         String id = String.valueOf(targetEmail);
 
         // 로그인 한 유저의 SseEmitter 모두 가져오기
         Map<String, SseEmitter> sseEmitters = sseRepository.findAllStartById(id);
         sseEmitters.forEach(
                 (key, emitter) -> {
+                    String keyId = key+"_"+System.currentTimeMillis();
                     // 데이터 캐시 저장(유실된 데이터 처리하기 위함)
-                    sseRepository.saveEventCache(key, notification);
+                    sseRepository.saveEventCache(keyId, notification);
                     // 데이터 전송
-                    sendToClient(emitter, key, notification);
+                    notificationResponse.mapper(keyId,notification);
+                    sendToClient(emitter, key, notificationResponse);
                 }
         );
     }
 
     @Override
     public void sendNoti(String title, String message) {
-        Notification notification = new Notification(title,null, message, "Notification");
-        sseRepository.saveEventCache("ALL", notification);
+        String keyId = "ALL_"+System.currentTimeMillis();
+        Notification notification = new Notification(title,null, message,null, "Notification");
+
+        NotificationResponse notificationResponse = new NotificationResponse();
+        notificationResponse.mapper(keyId,notification);
+
+        sseRepository.saveEventCache(keyId, notification);
+        Map<String, SseEmitter> sseEmitters = sseRepository.findAll();
+        sseEmitters.forEach(
+                (key, emitter) -> {
+                    sendToClient(emitter, key, notificationResponse);
+                }
+        );
     }
 
     @Override

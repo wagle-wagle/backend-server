@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -98,6 +99,7 @@ public class UserController {
 
 
     @GetMapping("/users/password/validation")
+    @PreAuthorize("isAuthenticated()")
     public CommonResponse<Boolean> verifyPassword(
             @RequestHeader("Authorization") String accessToken,
             @AuthenticationPrincipal PrincipalDetail user, @RequestBody UpdatePasswordRequest updatePasswordRequestDto){
@@ -109,6 +111,7 @@ public class UserController {
 
 
     @PutMapping("/users/password/change")
+    @PreAuthorize("isAuthenticated()")
     public CommonResponse<Void> updatePassword(
             @RequestHeader("Authorization") String accessToken,
             @AuthenticationPrincipal PrincipalDetail user, @RequestBody UpdatePasswordRequest updatePasswordRequestDto){
@@ -120,6 +123,7 @@ public class UserController {
 
 
     @DeleteMapping("/users/{userId}")
+    @PreAuthorize("isAuthenticated()")
     public CommonResponse<Void> deleteUserAccount(
             @RequestHeader("Authorization") String accessToken,
             @AuthenticationPrincipal PrincipalDetail user){

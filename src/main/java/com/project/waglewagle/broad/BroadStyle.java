@@ -30,11 +30,11 @@ public class BroadStyle {
         if(request.getColorCode() != null){
             this.colorCode = request.getColorCode();
         }
-        if(request.getBackGroundCode() != null){
-            this.friendCode = request.getFriendCode();
-        }
         if(request.getFriendCode() != null){
             this.friendCode = request.getFriendCode();
+        }
+        if(request.getBackGroundCode() != null){
+            this.backGroundCode = request.getBackGroundCode();
         }
     }
 }

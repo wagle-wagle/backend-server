@@ -100,7 +100,7 @@ public class NaverLoginService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             TokenDto token = tokenProvider.createToken(authentication, users.getUserId());
-            log.info("NAVER 로그인 token 발급 (신규) {} ", token.getAccessToken());
+            log.info("NAVER 로그인 token 발급 (신규)");
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token.getAccessToken());
 
@@ -119,10 +119,9 @@ public class NaverLoginService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             TokenDto token = tokenProvider.createToken(authentication, findUser.get().getId());
-            log.info("NAVER 로그인 token 발급 (기존) {} ", token.getAccessToken());
+            log.info("NAVER 로그인 token 발급 (기존)");
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token.getAccessToken());
-
 
             LoginResponse loginResponse = LoginResponse.builder()
                     .userId(findUser.get().getId())

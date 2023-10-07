@@ -78,8 +78,6 @@ public class KakaoLoginService {
         String email = kakaoAccount.getEmail();
         String id = kakaoUserInfoResponse.getId();
 
-        log.info("===================== 카카오 사용자 정보 가져오기 getUserInfo = " + email + "/" + id + "===========================");
-
         return OauthAttributes.builder()
                 .userName(kakaoAccount.getProfile().getNickname())
                 .email(!StringUtils.hasText(email) ? kakaoUserInfoResponse.getId() : email) // 이메일 존재하지 않은경우 회원번호
@@ -104,7 +102,7 @@ public class KakaoLoginService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             TokenDto token = tokenProvider.createToken(authentication, users.getUserId());
-            log.info("KAKAO 로그인 token 발급 (신규) {} ", token.getAccessToken());
+            log.info("KAKAO 로그인 token 발급 (신규)");
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token.getAccessToken());
 
@@ -124,10 +122,9 @@ public class KakaoLoginService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             TokenDto token = tokenProvider.createToken(authentication, findUser.get().getId());
-            log.info("KAKAO 로그인 token 발급 (기존) {} ", token.getAccessToken());
+            log.info("KAKAO 로그인 token 발급 (기존)");
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token.getAccessToken());
-
 
             LoginResponse loginResponse = LoginResponse.builder()
                     .userId(findUser.get().getId())

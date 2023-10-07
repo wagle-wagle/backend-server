@@ -94,7 +94,6 @@ public class UserService {
         Users socialUser = Users.builder()
                 .email(userInfo.getEmail())
                 .password(passwordEncoder.encode(userInfo.getPassword()))
-                .userName(userInfo.getUserName())
                 .memberType(userInfo.getMemberType())
                 .roles("ROLE_USER")
                 .build();

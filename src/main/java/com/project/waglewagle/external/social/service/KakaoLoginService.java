@@ -55,7 +55,7 @@ public class KakaoLoginService {
                 .client_secret(clientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-                .redirect_uri("http://localhost:8080/oauth/kakao/callback")
+                .redirect_uri("https://vw7rjas2pe.ap-northeast-1.awsapprunner.com/oauth/kakao/callback")
                 .build();
 
         KakaoTokenDto.Response kakaoTokenResponse

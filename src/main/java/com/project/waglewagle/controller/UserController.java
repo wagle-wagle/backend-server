@@ -1,7 +1,7 @@
 package com.project.waglewagle.controller;
 
 import com.project.waglewagle.dto.*;
-import com.project.waglewagle.dto.mypage.UpdatePasswordRequest;
+import com.project.waglewagle.dto.user.UpdatePasswordRequest;
 import com.project.waglewagle.dto.user.*;
 import com.project.waglewagle.global.config.jwt.TokenService;
 import com.project.waglewagle.global.config.security.PrincipalDetail;

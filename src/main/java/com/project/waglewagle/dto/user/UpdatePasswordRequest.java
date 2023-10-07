@@ -1,4 +1,4 @@
-package com.project.waglewagle.dto.mypage;
+package com.project.waglewagle.dto.user;
 
 import lombok.Getter;
 

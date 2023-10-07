@@ -111,6 +111,11 @@ public class UserService {
         return user;
     }
 
+    public Optional<Users> findSocialMemberByEmail(String email){
+        Optional<Users> user = userRepository.findByEmail(email);
+        return user;
+    }
+
 
     @Transactional
     public UserInfoResponse updateHopae(Long userId, String username){
@@ -166,5 +171,17 @@ public class UserService {
         userRepository.delete(users.get());
         return users.get();
     }
+
+    @Transactional
+    public Users sendEmailTemporaryPassword(Long userId){
+        Optional<Users> users =  userRepository.findById(userId);
+        if(users.isEmpty()){
+            throw new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXIST);
+        }
+        userRepository.delete(users.get());
+        return users.get();
+    }
+
+
 
 }

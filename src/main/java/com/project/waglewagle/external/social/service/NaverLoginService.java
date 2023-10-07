@@ -5,11 +5,8 @@ import com.project.waglewagle.dto.user.UserInfoResponse;
 import com.project.waglewagle.entity.MemberType;
 import com.project.waglewagle.entity.Users;
 import com.project.waglewagle.external.oauth.model.OauthAttributes;
-import com.project.waglewagle.external.social.client.KakaoTokenClient;
-import com.project.waglewagle.external.social.client.KakaoUserInfoClient;
 import com.project.waglewagle.external.social.client.NaverTokenClient;
 import com.project.waglewagle.external.social.client.NaverUserInfoClient;
-import com.project.waglewagle.external.social.dto.KakaoUserInfoDto;
 import com.project.waglewagle.external.social.dto.NaverTokenDto;
 import com.project.waglewagle.external.social.dto.NaverUserInfoDto;
 import com.project.waglewagle.global.config.jwt.JwtFilter;
@@ -91,7 +88,7 @@ public class NaverLoginService {
 
     public LoginResponse emailExist(OauthAttributes naverUserInfo){
 
-        Optional<Users> findUser = userService.findMemberByEmail(naverUserInfo.getEmail());
+        Optional<Users> findUser = userService.findSocialMemberByEmail(naverUserInfo.getEmail());
 
         if (findUser.isEmpty()) {
             log.info("===================== 네이버 신규회원 가입 =====================");

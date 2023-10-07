@@ -92,7 +92,7 @@ public class KakaoLoginService {
 
     public LoginResponse emailExist(OauthAttributes kakaoUserInfo) {
 
-        Optional<Users> findUser = userService.findMemberByEmail(kakaoUserInfo.getEmail());
+        Optional<Users> findUser = userService.findSocialMemberByEmail(kakaoUserInfo.getEmail());
 
         if (findUser.isEmpty()) {
             log.info("===================== 카카오 신규회원 가입 =====================");

@@ -55,7 +55,7 @@ public class KakaoLoginService {
                 .client_secret(clientSecret)
                 .grant_type("authorization_code")
                 .code(code)
-                .redirect_uri("https://waglewagle.vercel.app/oauth/kakao/callback")
+                .redirect_uri("http://localhost:3000/oauth/kakao/callback")
                 .build();
 
         KakaoTokenDto.Response kakaoTokenResponse

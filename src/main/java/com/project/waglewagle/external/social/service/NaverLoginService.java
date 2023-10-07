@@ -25,13 +25,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.lang.reflect.Member;
 import java.util.Optional;
 
 @Slf4j
-//@Service
+@Service
 @RequiredArgsConstructor
 public class NaverLoginService {
 
@@ -111,8 +109,6 @@ public class NaverLoginService {
 
             LoginResponse loginResponse = LoginResponse.builder()
                     .userId(users.getUserId())
-                    .userName(users.getUserName())
-                    .isExistHopae(users.getUserName() == null? false : true)
                     .accessToken(token.getAccessToken())
                     .build();
 

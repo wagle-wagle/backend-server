@@ -87,6 +87,7 @@ public class UserController {
 
     @PostMapping("/users/password/temporary-email")
     public CommonResponse<Void> sendEmailTemporaryPassword(){
+        //userService.sendEmailTemporaryPassword();
         return ApiResponse.createSuccess("님의 이메일로 임시 비밀번호 발급되었습니다.", HttpStatus.OK, null);
     }
 
@@ -98,7 +99,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/users/password/validation")
+    @PostMapping("/users/password/validation")
     @PreAuthorize("isAuthenticated()")
     public CommonResponse<Boolean> verifyPassword(
             @RequestHeader("Authorization") String accessToken,

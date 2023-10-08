@@ -45,6 +45,8 @@ public class NaverLoginService {
     // 토큰발급
     public String getAccessToken(String code, String state){
 
+        log.info("error 네이버 테스트 로그 확인용 : " + code + "/" + state);
+
         String contentType = "application/x-www-form-urlencoded;charset=utf-8";
 
         NaverTokenDto.Request naverTokenRequest = NaverTokenDto.Request.builder()

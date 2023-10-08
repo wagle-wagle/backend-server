@@ -84,11 +84,16 @@ public class UserController {
     }
 
 
-
+    /**
+     * 임시 비밀번호 발급
+     * @param
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/users/password/temporary-email")
-    public CommonResponse<Void> sendEmailTemporaryPassword(){
-        //userService.sendEmailTemporaryPassword();
-        return ApiResponse.createSuccess("님의 이메일로 임시 비밀번호 발급되었습니다.", HttpStatus.OK, null);
+    public CommonResponse<Boolean> sendEmailTemporaryPassword(@RequestBody SendEmailRequest sendEmailRequestDto) throws Exception {
+        Users users = userService.sendEmailTemporaryPassword(sendEmailRequestDto.getEmail());
+        return ApiResponse.createSuccess("해당 이메일로 임시 비밀번호 발급되었습니다.", HttpStatus.OK, null);
     }
 
 

@@ -11,6 +11,7 @@ import com.project.waglewagle.global.error.ErrorCode;
 import com.project.waglewagle.global.error.exception.BusinessException;
 import com.project.waglewagle.global.error.exception.DuplicateMemberException;
 import com.project.waglewagle.global.error.exception.EntityNotFoundException;
+import com.project.waglewagle.global.util.EmailService;
 import com.project.waglewagle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,10 +28,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserService {
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final TokenService tokenProvider;
     private final UserRepository userRepository;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
+    private final EmailService emailService;
+
+
+
 
 
     // 사용자 인증 및 토큰발급
@@ -41,7 +46,7 @@ public class UserService {
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        TokenDto tokenDto = tokenProvider.createToken(authentication, userId);
+        TokenDto tokenDto = tokenService.createToken(authentication, userId);
         return tokenDto;
     }
 
@@ -173,13 +178,14 @@ public class UserService {
     }
 
     @Transactional
-    public Users sendEmailTemporaryPassword(Long userId){
-        Optional<Users> users =  userRepository.findById(userId);
-        if(users.isEmpty()){
-            throw new EntityNotFoundException(ErrorCode.MEMBER_NOT_EXIST);
+    public Users sendEmailTemporaryPassword(String email) throws Exception {
+        Optional<Users> user = userRepository.findByEmail(email);
+        if(user.isEmpty()){
+            throw new BusinessException(ErrorCode.EMAIL_NOT_EXIST);
         }
-        userRepository.delete(users.get());
-        return users.get();
+        String ePassword = emailService.sendSimpleMessage(email);
+        user.get().updatePassword(passwordEncoder.encode(ePassword));
+        return user.get();
     }
 
 

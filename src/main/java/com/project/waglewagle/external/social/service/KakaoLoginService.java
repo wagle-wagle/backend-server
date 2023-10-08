@@ -108,7 +108,6 @@ public class KakaoLoginService {
 
             LoginResponse loginResponse = LoginResponse.builder()
                     .userId(users.getUserId())
-                    .boardId(users.getBroadId())
                     .accessToken(token.getAccessToken())
                     .build();
 
@@ -129,6 +128,7 @@ public class KakaoLoginService {
             LoginResponse loginResponse = LoginResponse.builder()
                     .userId(findUser.get().getId())
                     .userName(findUser.get().getUserName())
+                    .boardId(findUser.get().getBroad().getId())
                     .isExistHopae(findUser.get().getUserName() == null ? false : true)
                     .accessToken(token.getAccessToken())
                     .build();
